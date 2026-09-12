@@ -11,6 +11,10 @@ function getConnectionString() {
   return process.env.DATABASE_URL || process.env.POSTGRES_URL || process.env.DATABASE_URL_UNPOOLED || '';
 }
 
+function getAuthBaseUrl() {
+  return process.env.NEON_AUTH_BASE_URL || process.env.SITE_NEON_AUTH_URL || '';
+}
+
 function parseBody(req) {
   if (!req.body) return {};
   if (typeof req.body === 'string') {
@@ -51,7 +55,7 @@ function validEmail(email) {
 }
 
 async function authRequest(req, path, payload) {
-  const base = String(process.env.NEON_AUTH_BASE_URL || '').replace(/\/$/, '');
+  const base = String(getAuthBaseUrl()).replace(/\/$/, '');
   if (!base) throw new Error('AUTH_NOT_CONFIGURED');
   const response = await fetch(`${base}${path}`, {
     method: 'POST',
@@ -109,12 +113,12 @@ module.exports = async function handler(req, res) {
       return send(res, 200, {
         ok: true,
         authenticated: Boolean(user),
-        authConfigured: Boolean(process.env.NEON_AUTH_BASE_URL),
+        authConfigured: Boolean(getAuthBaseUrl()),
         user: user ? { id: user.id, name: user.name, email: user.email, emailVerified: user.emailVerified } : null
       });
     } catch (error) {
       console.error('auth session check failed', error);
-      return send(res, 200, { ok: true, authenticated: false, authConfigured: Boolean(process.env.NEON_AUTH_BASE_URL), user: null });
+      return send(res, 200, { ok: true, authenticated: false, authConfigured: Boolean(getAuthBaseUrl()), user: null });
     }
   }
 
@@ -180,3 +184,4 @@ module.exports = async function handler(req, res) {
 module.exports.getSessionUser = getSessionUser;
 module.exports.parseCookies = parseCookies;
 module.exports.COOKIE_NAME = COOKIE_NAME;
+module.exports.getAuthBaseUrl = getAuthBaseUrl;

@@ -1,0 +1,106 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <meta name="description" content="RightsRadar UK Community: discuss UK legal news and rights information, alongside verified legal updates and clearly labelled advertising.">
+  <title>Community | RightsRadar UK</title>
+  <link rel="canonical" href="https://rightsradaruk.vercel.app/community.html">
+  <meta property="og:type" content="website"><meta property="og:locale" content="en_GB"><meta property="og:site_name" content="RightsRadar UK"><meta property="og:title" content="Community | RightsRadar UK"><meta property="og:description" content="Discuss UK legal news and general rights information in the RightsRadar community."><meta property="og:url" content="https://rightsradaruk.vercel.app/community.html">
+  <link rel="icon" href="/favicon.svg" type="image/svg+xml">
+  <link rel="stylesheet" href="assets/styles.css">
+  <style>
+    .community-shell{display:grid;grid-template-columns:270px minmax(0,1fr) 260px;gap:18px;align-items:start}
+    .side-panel,.discussion-panel{background:linear-gradient(180deg,#101824,#0d141f);border:1px solid var(--line);border-radius:18px;padding:18px}
+    .side-panel{position:sticky;top:92px}.side-panel h2,.discussion-panel h2{margin:0 0 12px;font-size:1.15rem}
+    .news-item{display:block;text-decoration:none;padding:12px 0;border-top:1px solid var(--line)}.news-item:first-of-type{border-top:0}.news-item strong{display:block;color:#eef3f9;font-size:.92rem;line-height:1.35}.news-item span{display:block;color:var(--muted);font-size:.75rem;margin-top:5px}
+    .community-toolbar{display:flex;gap:10px;justify-content:space-between;align-items:center;flex-wrap:wrap;margin-bottom:16px}.community-toolbar p{margin:0;color:var(--muted);font-size:.88rem}
+    .thread{border:1px solid var(--line);border-radius:15px;padding:17px;margin:12px 0;background:#0b121d}.thread-head{display:flex;gap:10px;align-items:center;flex-wrap:wrap}.thread h3{margin:8px 0 5px;font-size:1.08rem}.thread p{margin:0;color:#b8c5d8}.thread-meta{color:var(--muted);font-size:.78rem}.verified-badge{display:inline-flex;padding:4px 7px;border-radius:999px;background:#11352f;border:1px solid #1c5a4e;color:#7fe0c6;font-size:.7rem;font-weight:850}.user-badge{display:inline-flex;padding:4px 7px;border-radius:999px;background:#182232;color:#b8c5d8;font-size:.7rem;font-weight:850}.composer{border:1px dashed #39506d;border-radius:15px;padding:18px;margin-bottom:18px;background:#0c1420}.composer textarea{width:100%;min-height:90px;background:#0a111c;color:var(--ink);border:1px solid #2a394f;border-radius:11px;padding:12px;font:inherit;resize:vertical}.composer-actions{display:flex;gap:10px;align-items:center;justify-content:space-between;margin-top:10px;flex-wrap:wrap}.composer small{color:var(--muted)}
+    .ad-slot{min-height:180px;border:1px dashed #48546a;border-radius:15px;display:grid;place-items:center;text-align:center;padding:18px;background:#0a1019;color:#8795aa;margin-bottom:14px}.ad-slot strong{display:block;color:#c8d2df;font-size:.75rem;letter-spacing:.08em;text-transform:uppercase;margin-bottom:5px}.ad-note{font-size:.74rem;color:#78869a;margin-top:8px}
+    .rules{font-size:.83rem;color:#aebbd0}.rules ul{padding-left:18px;margin-bottom:0}.rules li{margin:7px 0}.statusline{display:none;padding:11px 12px;border-radius:10px;margin:12px 0;background:#10251f;border:1px solid #234b3d;color:#86ddb8}.statusline.error{display:block;background:#2b1619;border-color:#603038;color:#f2c4ca}
+    @media(max-width:1000px){.community-shell{grid-template-columns:220px minmax(0,1fr)}.ads-column{grid-column:1/-1;display:grid;grid-template-columns:1fr 1fr;gap:14px}.ads-column .side-panel{position:static}}
+    @media(max-width:760px){.community-shell{grid-template-columns:1fr}.side-panel{position:static}.news-column{order:2}.discussion-column{order:1}.ads-column{order:3;display:block}.community-toolbar .btn{width:100%}}
+  </style>
+</head>
+<body>
+  <div class="topbar"><div class="wrap">Independent legal information — <strong>&nbsp;not legal advice.</strong></div></div>
+  <header><nav class="wrap"><a class="brand" href="index.html"><span class="brandmark">RR</span><span>RightsRadar UK</span></a><div class="navlinks"><a href="index.html#rights">Your rights</a><a href="new-laws.html">New laws</a><a href="alerts.html">Law alerts</a><a href="community.html">Community</a><a href="about.html">About</a></div><button class="menu" aria-label="Menu">☰</button></nav></header>
+
+  <main class="article"><div class="wrap">
+    <article class="prose">
+      <div class="crumbs"><a href="index.html">Home</a> / Community</div>
+      <div class="meta"><span class="pill">Community beta</span><span class="pill">Login required to post</span></div>
+      <h1>RightsRadar Community</h1>
+      <p>Discuss UK legal news and general rights information with other readers. RightsRadar verified information is clearly marked; ordinary community posts are user-generated and are not legal advice.</p>
+    </article>
+
+    <div class="community-shell">
+      <aside class="news-column">
+        <div class="side-panel">
+          <h2>Verified legal news</h2>
+          <p class="small">From the same official-source feed used by RightsRadar.</p>
+          <div id="communityNews"><div class="small">Loading official updates…</div></div>
+          <p style="margin-bottom:0"><a href="new-laws.html">See all new &amp; changed laws →</a></p>
+        </div>
+      </aside>
+
+      <section class="discussion-column discussion-panel">
+        <div class="community-toolbar">
+          <div><h2>Conversations</h2><p>Community discussion · not verified legal advice</p></div>
+          <a class="btn btn-primary" id="communityLogin" href="#login">Sign in / Create account</a>
+        </div>
+
+        <div class="notice"><strong>Community safety</strong>Do not post names, addresses, phone numbers, court papers, medical information or other private case details. For urgent or case-specific help, use a qualified legal adviser.</div>
+
+        <div class="composer" id="communityComposer">
+          <label for="communityPost" style="font-weight:800;display:block;margin-bottom:8px">Start a conversation</label>
+          <textarea id="communityPost" disabled placeholder="Sign in to post a discussion or comment"></textarea>
+          <div class="composer-actions"><small>Posting unlocks after Neon Auth login is connected.</small><button class="btn btn-primary" type="button" disabled>Post discussion</button></div>
+        </div>
+        <div id="communityStatus" class="statusline"></div>
+        <div id="communityThreads"><div class="small">Loading discussions…</div></div>
+      </section>
+
+      <aside class="ads-column">
+        <div class="side-panel">
+          <h2>Advertising</h2>
+          <div class="ad-slot"><div><strong>Advertisement</strong><div>AdSense display space reserved</div><div class="ad-note">Ads will appear here only after approval and consent settings are active.</div></div></div>
+          <div class="ad-slot"><div><strong>Sponsored</strong><div>Future direct sponsor placement</div><div class="ad-note">Paid placements will always be clearly labelled and kept separate from editorial legal information.</div></div></div>
+          <div class="rules"><strong>Community rules</strong><ul><li>No impersonation or harassment.</li><li>No requests for personalised legal representation.</li><li>No private case documents or identifying information.</li><li>Report harmful or misleading posts.</li></ul></div>
+        </div>
+      </aside>
+    </div>
+  </div></main>
+
+  <footer><div class="wrap"><div class="footnote">© 2026 RightsRadar UK · Independent project · <a href="privacy.html">Privacy</a> · <a href="terms.html">Terms &amp; disclaimer</a></div></div></footer>
+  <script src="assets/app.js"></script>
+  <script>
+    (()=>{
+      const news=document.querySelector('#communityNews');
+      const threads=document.querySelector('#communityThreads');
+      const status=document.querySelector('#communityStatus');
+      const login=document.querySelector('#communityLogin');
+      const esc=s=>String(s??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+      const fmt=d=>{try{return new Intl.DateTimeFormat('en-GB',{dateStyle:'medium'}).format(new Date(d))}catch{return ''}};
+
+      login.addEventListener('click',e=>{
+        e.preventDefault();
+        status.className='statusline';status.style.display='block';
+        status.textContent='The community page and database are ready. Account sign-in is being connected to Neon Auth next; anonymous posting is intentionally disabled.';
+      });
+
+      fetch('/api/new-laws').then(r=>r.json()).then(data=>{
+        const items=[...(data.laws||[]),...(data.bills||[])].sort((a,b)=>new Date(b.date||0)-new Date(a.date||0)).slice(0,6);
+        news.innerHTML=items.length?items.map(x=>`<a class="news-item" href="${esc(x.url)}" target="_blank" rel="noopener"><strong>${esc(x.title)}</strong><span>${esc(x.status)} · ${esc(x.source)}${x.date?' · '+fmt(x.date):''}</span></a>`).join(''):'<div class="small">Official feed temporarily unavailable.</div>';
+      }).catch(()=>{news.innerHTML='<div class="small">Official feed temporarily unavailable.</div>'});
+
+      fetch('/api/community').then(async r=>({ok:r.ok,data:await r.json().catch(()=>({}))})).then(({ok,data})=>{
+        if(!ok) throw new Error(data.error||'Unable to load community.');
+        const list=data.threads||[];
+        threads.innerHTML=list.length?list.map(t=>`<article class="thread"><div class="thread-head"><span class="${t.isOfficial?'verified-badge':'user-badge'}">${t.isOfficial?'RightsRadar verified':'Community post'}</span><span class="thread-meta">${esc(t.authorName)} · ${fmt(t.createdAt)} · ${esc(t.jurisdiction)}</span></div><h3>${esc(t.title)}</h3><p>${esc(t.body)}</p><div class="thread-meta" style="margin-top:10px">${Number(t.commentCount)||0} comments · Report option activates with member accounts</div></article>`).join(''):'<div class="small">No discussions yet.</div>';
+        if(data.authConfigured){login.textContent='Account system detected';}
+      }).catch(err=>{threads.innerHTML=`<div class="statusline error">${esc(err.message)}</div>`});
+    })();
+  </script>
+</body>
+</html>

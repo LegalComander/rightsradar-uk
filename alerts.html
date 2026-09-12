@@ -1,0 +1,91 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <meta name="description" content="Choose the UK legal topics and jurisdiction you want RightsRadar UK to monitor for law-change alerts.">
+  <title>Law Alerts | RightsRadar UK</title>
+  <link rel="canonical" href="https://rightsradaruk.vercel.app/alerts.html">
+  <meta property="og:type" content="website"><meta property="og:locale" content="en_GB"><meta property="og:site_name" content="RightsRadar UK"><meta property="og:title" content="Law Alerts | RightsRadar UK"><meta property="og:description" content="Choose legal topics and a UK jurisdiction for RightsRadar law-change alerts."><meta property="og:url" content="https://rightsradaruk.vercel.app/alerts.html">
+  <link rel="icon" href="/favicon.svg" type="image/svg+xml">
+  <link rel="stylesheet" href="assets/styles.css">
+  <style>
+    .alerts-layout{display:grid;grid-template-columns:minmax(0,1.15fr) minmax(320px,.85fr);gap:24px;align-items:start}.alerts-panel{background:linear-gradient(180deg,#101824,#0d141f);border:1px solid var(--line);border-radius:22px;padding:26px}.alerts-panel h2{margin-top:0}.field{margin:18px 0}.field label,.field legend{display:block;font-weight:800;color:#dce5f2;margin-bottom:7px}.field input[type=email],.field select{width:100%;padding:13px 14px;border:1px solid #2a394f;border-radius:11px;background:#0a111c;color:var(--ink);font:inherit}.topic-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px}.topic{display:flex;gap:9px;align-items:center;padding:11px 12px;border:1px solid var(--line);border-radius:11px;background:#0b121d;color:#cbd6e6}.topic input{accent-color:#416dd8}.consent-row{display:flex;gap:10px;align-items:flex-start;color:#aebbd0;font-size:.9rem}.consent-row input{margin-top:4px;accent-color:#416dd8}.form-status{display:none;margin-top:14px;padding:12px 14px;border-radius:11px;border:1px solid #315342;background:#10251f;color:#8ce0b9}.form-status.error{border-color:#67333c;background:#2b1619;color:#f3c6cb}.plan-card{border:1px solid #35548b;background:linear-gradient(145deg,#11213b,#102b38);border-radius:18px;padding:22px;margin-bottom:14px}.plan-card h3{margin:0 0 6px}.price{font-size:2rem;font-weight:900;letter-spacing:-.04em}.plan-card ul{padding-left:20px;color:#b7c3d4}.coming{display:inline-flex;padding:6px 9px;border-radius:999px;background:#2a2412;color:#e4bd60;border:1px solid #443a1a;font-size:.75rem;font-weight:850}@media(max-width:850px){.alerts-layout{grid-template-columns:1fr}.topic-grid{grid-template-columns:1fr}}
+  </style>
+</head>
+<body>
+  <div class="topbar"><div class="wrap">Independent legal information — <strong>&nbsp;not legal advice.</strong></div></div>
+  <header><nav class="wrap"><a class="brand" href="index.html"><span class="brandmark">RR</span><span>RightsRadar UK</span></a><div class="navlinks"><a href="index.html#rights">Your rights</a><a href="protest-rights.html">Protest rights</a><a href="new-laws.html">New laws</a><a href="alerts.html">Law alerts</a><a href="about.html">About</a></div><button class="menu" aria-label="Menu">☰</button></nav></header>
+
+  <main class="article"><div class="wrap">
+    <article class="prose">
+      <div class="crumbs"><a href="index.html">Home</a> / Law Alerts</div>
+      <div class="meta"><span class="pill">Beta signup</span><span class="pill">Official-source monitoring</span></div>
+      <h1>Get notified when the law changes</h1>
+      <p>Choose your jurisdiction and the topics you care about. RightsRadar UK is building alerts around official legislation and Parliament sources, with jurisdiction labels and links back to the original source.</p>
+      <div class="notice"><strong>Beta status</strong>Your preferences can be registered now. Automated email delivery is being connected next, so the beta will not charge you and will not promise an alert until delivery is live.</div>
+    </article>
+
+    <div class="alerts-layout">
+      <section class="alerts-panel" aria-labelledby="signupTitle">
+        <h2 id="signupTitle">Register your alert preferences</h2>
+        <form id="lawAlertSignup">
+          <div class="field"><label for="alertEmail">Email address</label><input id="alertEmail" name="email" type="email" autocomplete="email" required placeholder="you@example.com"></div>
+          <div class="field"><label for="alertJurisdiction">Jurisdiction</label><select id="alertJurisdiction" name="jurisdiction" required><option value="scotland">Scotland</option><option value="england-wales">England &amp; Wales</option><option value="northern-ireland">Northern Ireland</option><option value="uk-wide">UK-wide / all jurisdictions</option></select></div>
+          <fieldset class="field" style="border:0;padding:0"><legend>Topics</legend><div class="topic-grid">
+            <label class="topic"><input type="checkbox" name="topics" value="police-powers" checked> Police powers</label>
+            <label class="topic"><input type="checkbox" name="topics" value="protest-law"> Protest law</label>
+            <label class="topic"><input type="checkbox" name="topics" value="courts"> Courts</label>
+            <label class="topic"><input type="checkbox" name="topics" value="housing"> Housing</label>
+            <label class="topic"><input type="checkbox" name="topics" value="benefits"> Benefits</label>
+            <label class="topic"><input type="checkbox" name="topics" value="driving"> Driving</label>
+            <label class="topic"><input type="checkbox" name="topics" value="employment"> Employment</label>
+            <label class="topic"><input type="checkbox" name="topics" value="consumer-rights"> Consumer rights</label>
+          </div></fieldset>
+          <div class="field"><label for="alertFrequency">How often?</label><select id="alertFrequency" name="frequency"><option value="weekly">Weekly digest</option><option value="important">Important changes only</option></select></div>
+          <div class="field consent-row"><input id="alertConsent" type="checkbox" required><label for="alertConsent">I want RightsRadar UK to store my email address and these preferences for the Law Alerts beta. I can ask for them to be deleted by contacting <a href="mailto:ukrightsradar@gmail.com">ukrightsradar@gmail.com</a>. See the <a href="privacy.html">privacy notice</a>.</label></div>
+          <button class="btn btn-primary" type="submit" style="width:100%">Register for Law Alerts beta</button>
+          <div id="lawAlertStatus" class="form-status" role="status" aria-live="polite"></div>
+        </form>
+      </section>
+
+      <aside>
+        <div class="plan-card"><span class="coming">FREE BETA</span><h3 style="margin-top:12px">Law Alerts Free</h3><div class="price">£0</div><ul><li>Choose a jurisdiction</li><li>Select legal topics</li><li>Weekly or important-change preference</li><li>Official-source links</li></ul></div>
+        <div class="plan-card"><span class="coming">NEXT PHASE</span><h3 style="margin-top:12px">RightsRadar Plus</h3><div class="price">£3.99 <span style="font-size:.95rem;color:#9aa8bd">/ month</span></div><ul><li>Faster law-change alerts</li><li>Multiple jurisdictions and unlimited topics</li><li>Saved guides and bookmarks</li><li>Ad-free browsing</li></ul><p class="small">Plus will only open for payment after the separate RightsRadar Stripe account and email delivery are connected.</p></div>
+      </aside>
+    </div>
+
+    <div class="notice danger" style="margin-top:26px"><strong>Legal information, not legal advice</strong>Law Alerts will flag possible changes and link to official material. They are not a substitute for advice about your own case, and a Bill is not law unless and until it is enacted.</div>
+  </div></main>
+
+  <footer><div class="wrap"><div class="footnote">© 2026 RightsRadar UK · Independent project · <a href="privacy.html">Privacy</a> · <a href="terms.html">Terms &amp; disclaimer</a></div></div></footer>
+  <script src="assets/app.js"></script>
+  <script>
+    (()=>{
+      const form=document.querySelector('#lawAlertSignup');
+      const status=document.querySelector('#lawAlertStatus');
+      const params=new URLSearchParams(location.search);
+      if(params.get('email')) document.querySelector('#alertEmail').value=params.get('email');
+      if(params.get('jurisdiction')) document.querySelector('#alertJurisdiction').value=params.get('jurisdiction');
+      form.addEventListener('submit',async e=>{
+        e.preventDefault();
+        status.className='form-status';status.style.display='block';status.textContent='Saving your preferences…';
+        const data=new FormData(form);
+        const payload={email:data.get('email'),jurisdiction:data.get('jurisdiction'),frequency:data.get('frequency'),topics:data.getAll('topics'),consent:document.querySelector('#alertConsent').checked};
+        if(!payload.topics.length){status.classList.add('error');status.textContent='Choose at least one topic.';return;}
+        try{
+          const r=await fetch('/api/alerts',{method:'POST',headers:{'content-type':'application/json'},body:JSON.stringify(payload)});
+          const result=await r.json().catch(()=>({}));
+          if(!r.ok) throw new Error(result.error||'Unable to save preferences.');
+          status.textContent=result.message||'Preferences saved.';
+          form.querySelector('button[type=submit]').textContent='Preferences saved';
+        }catch(err){
+          status.classList.add('error');
+          if(String(err.message).includes('storage is not connected')) status.textContent='The signup page is ready, but private alert storage still needs to be connected in Vercel before registrations can be saved.';
+          else status.textContent=err.message||'Unable to save preferences right now.';
+        }
+      });
+    })();
+  </script>
+</body>
+</html>

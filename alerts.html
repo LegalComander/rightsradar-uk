@@ -81,7 +81,7 @@
           form.querySelector('button[type=submit]').textContent='Preferences saved';
         }catch(err){
           status.classList.add('error');
-          if(String(err.message).includes('storage is not connected')) status.textContent='The signup page is ready, but private alert storage still needs to be connected in Vercel before registrations can be saved.';
+          if(String(err.message).includes('database is not connected')) status.textContent='The signup page is ready, but the Law Alerts database still needs to finish connecting before registrations can be saved.';
           else status.textContent=err.message||'Unable to save preferences right now.';
         }
       });

@@ -17,7 +17,7 @@
 
     <h2>Law Alerts beta</h2>
     <p>If you successfully register for the Law Alerts beta, RightsRadar UK stores the email address you provide together with your chosen jurisdiction, topics, alert-frequency preference and the time you gave consent. These details are used only to operate and develop the Law Alerts service. The signup does not ask for details about a legal case.</p>
-    <p>Law Alerts registration data is intended to be stored in private server-side storage connected to the RightsRadar UK Vercel project. If that storage is unavailable, the signup form will tell you that your preferences could not be saved rather than silently collecting them elsewhere.</p>
+    <p>Law Alerts registration data is stored server-side in a PostgreSQL database provided through Neon and connected to the RightsRadar UK Vercel project. If that database is unavailable, the signup form will tell you that your preferences could not be saved rather than silently collecting them elsewhere.</p>
     <p>Automated email delivery is not live yet. The beta registration page makes this clear and no paid Law Alerts subscription is offered until the delivery system is connected.</p>
 
     <h2>Hosting and technical information</h2>
@@ -34,7 +34,7 @@
     <p>Law Alerts beta information will be removed on a valid deletion request and will be reviewed when the beta ends or moves to a full service. RightsRadar UK will not keep beta registrations indefinitely without a continuing service purpose. Infrastructure-log retention is controlled through the hosting service and its applicable settings.</p>
 
     <h2>Sharing and service providers</h2>
-    <p>RightsRadar UK does not sell Law Alerts registration data. Service providers may process information where needed to host the website, store preferences, deliver future emails or process future payments. When those services are activated, this notice will identify material changes to the way personal information is handled.</p>
+    <p>RightsRadar UK does not sell Law Alerts registration data. Vercel and Neon may process information where needed to host the website and store Law Alerts preferences. Future email-delivery and payment providers will be identified here when those services are activated.</p>
 
     <h2>Your data-protection rights</h2>
     <p>Depending on the circumstances, UK data-protection law may give you rights to ask for access, correction, deletion, restriction or objection, and to complain to the Information Commissioner’s Office. Visit <a href="https://ico.org.uk/make-a-complaint/" rel="noopener">ico.org.uk</a> for the official complaint route.</p>

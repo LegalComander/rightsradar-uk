@@ -166,3 +166,82 @@
 
   Promise.all([refreshAuth(),refreshCommunity()]);
 })();
+
+(()=>{
+  const host=document.querySelector('.ads-column');
+  if(!host)return;
+  const esc=s=>String(s??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+  const fmt=d=>{try{return new Intl.DateTimeFormat('en-GB',{hour:'2-digit',minute:'2-digit'}).format(new Date(d))}catch{return ''}};
+  const style=document.createElement('style');
+  style.textContent=`
+    .rr-chat-panel{position:static!important;margin-bottom:14px}.rr-chat-head{display:flex;align-items:center;justify-content:space-between;gap:8px}.rr-chat-head h2{margin:0}.rr-chat-badge{font-size:.67rem;font-weight:850;color:#9ed9c9;border:1px solid #285648;background:#10251e;border-radius:999px;padding:4px 7px}.rr-chat-messages{height:310px;overflow:auto;border:1px solid #26354a;border-radius:12px;background:#09111b;padding:10px;margin:12px 0}.rr-chat-message{padding:8px 0;border-top:1px solid #182638}.rr-chat-message:first-child{border-top:0}.rr-chat-meta{font-size:.7rem;color:#8292a8;display:flex;gap:6px;align-items:center;justify-content:space-between}.rr-chat-author{color:#c8d5e7;font-weight:800}.rr-chat-body{font-size:.83rem;color:#b9c6d7;white-space:pre-wrap;overflow-wrap:anywhere;margin-top:3px}.rr-chat-report{border:0;background:transparent;color:#809fdc;font-size:.68rem;cursor:pointer;padding:0}.rr-chat-form{display:flex;gap:7px}.rr-chat-form input{min-width:0;flex:1;background:#0a111c;color:var(--ink);border:1px solid #2a394f;border-radius:10px;padding:9px 10px;font:inherit;font-size:.82rem}.rr-chat-form button{border:0;border-radius:10px;background:#315fc4;color:#fff;font-weight:800;padding:9px 11px;cursor:pointer}.rr-chat-form button:disabled,.rr-chat-form input:disabled{opacity:.55;cursor:not-allowed}.rr-chat-note{font-size:.7rem;color:#77869b;margin:8px 0 0}.rr-chat-status{font-size:.72rem;color:#9ed9c9;margin-top:7px}.rr-chat-status.error{color:#efb7bf}@media(max-width:1000px){.rr-chat-panel{position:static!important}}`;
+  document.head.appendChild(style);
+
+  const panel=document.createElement('div');
+  panel.className='side-panel rr-chat-panel';
+  panel.innerHTML=`<div class="rr-chat-head"><h2>Member chat</h2><span class="rr-chat-badge">Members only</span></div><p class="small">Quick community chat. User messages are not verified legal advice.</p><div id="rrChatMessages" class="rr-chat-messages"><div class="small">Sign in to view member chat.</div></div><form id="rrChatForm" class="rr-chat-form"><input id="rrChatInput" maxlength="500" autocomplete="off" placeholder="Write a message…" disabled><button type="submit" disabled>Send</button></form><div id="rrChatStatus" class="rr-chat-status"></div><p class="rr-chat-note">Do not share private case details, addresses, phone numbers or medical information.</p>`;
+  host.prepend(panel);
+
+  const box=panel.querySelector('#rrChatMessages');
+  const form=panel.querySelector('#rrChatForm');
+  const input=panel.querySelector('#rrChatInput');
+  const button=form.querySelector('button');
+  const status=panel.querySelector('#rrChatStatus');
+  let user=null;
+  let loading=false;
+
+  async function request(url,options={}){
+    const r=await fetch(url,{credentials:'same-origin',cache:'no-store',...options});
+    const data=await r.json().catch(()=>({}));
+    if(!r.ok){const e=new Error(data.error||'Chat request failed.');e.status=r.status;throw e;}
+    return data;
+  }
+
+  function setLocked(message='Sign in to view member chat.'){
+    user=null;input.disabled=true;button.disabled=true;box.innerHTML=`<div class="small">${esc(message)}</div>`;
+  }
+
+  function render(data){
+    user=data.user||null;
+    const messages=data.messages||[];
+    input.disabled=!user;button.disabled=!user;
+    const nearBottom=box.scrollHeight-box.scrollTop-box.clientHeight<60;
+    if(!messages.length){box.innerHTML='<div class="small">No messages yet. Start the chat.</div>';return;}
+    box.innerHTML=messages.map(m=>`<div class="rr-chat-message"><div class="rr-chat-meta"><span><span class="rr-chat-author">${esc(m.authorName)}</span> · ${fmt(m.createdAt)}</span>${user&&String(user.id)!==String(m.authorUserId)?`<button class="rr-chat-report" type="button" data-chat-report="${m.id}">Report</button>`:''}</div><div class="rr-chat-body">${esc(m.body)}</div></div>`).join('');
+    if(nearBottom||!box.dataset.loaded)box.scrollTop=box.scrollHeight;
+    box.dataset.loaded='1';
+  }
+
+  async function load(){
+    if(loading||document.hidden)return;
+    loading=true;
+    try{render(await request('/api/chat'));status.textContent='';status.className='rr-chat-status';}
+    catch(err){if(err.status===401)setLocked();else{status.textContent=err.message;status.className='rr-chat-status error';}}
+    finally{loading=false;}
+  }
+
+  form.addEventListener('submit',async e=>{
+    e.preventDefault();
+    const text=input.value.trim();
+    if(!text)return;
+    button.disabled=true;status.textContent='Sending…';status.className='rr-chat-status';
+    try{await request('/api/chat',{method:'POST',headers:{'content-type':'application/json'},body:JSON.stringify({action:'send',body:text})});input.value='';await load();status.textContent='';}
+    catch(err){status.textContent=err.message;status.className='rr-chat-status error';}
+    finally{button.disabled=!user;}
+  });
+
+  panel.addEventListener('click',async e=>{
+    const b=e.target.closest('[data-chat-report]');
+    if(!b)return;
+    const reason=window.prompt('Why are you reporting this chat message?');
+    if(!reason)return;
+    try{const data=await request('/api/chat',{method:'POST',headers:{'content-type':'application/json'},body:JSON.stringify({action:'report',messageId:Number(b.dataset.chatReport),reason})});status.textContent=data.message||'Reported.';status.className='rr-chat-status';}
+    catch(err){status.textContent=err.message;status.className='rr-chat-status error';}
+  });
+
+  const member=document.querySelector('#communityMember');
+  if(member)new MutationObserver(()=>load()).observe(member,{attributes:true,childList:true,subtree:true});
+  document.addEventListener('visibilitychange',()=>{if(!document.hidden)load();});
+  setInterval(load,10000);
+  load();
+})();

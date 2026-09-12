@@ -1,0 +1,84 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <meta name="robots" content="noindex,nofollow">
+  <meta name="description" content="RightsRadar UK community moderation dashboard.">
+  <title>Community moderation | RightsRadar UK</title>
+  <link rel="icon" href="/favicon.svg" type="image/svg+xml">
+  <link rel="stylesheet" href="assets/styles.css">
+  <style>
+    .admin-grid{display:grid;grid-template-columns:1fr 1fr;gap:18px}.panel{background:linear-gradient(180deg,#101824,#0d141f);border:1px solid var(--line);border-radius:18px;padding:20px}.panel h2{margin-top:0}.mod-item{border:1px solid var(--line);border-radius:14px;padding:14px;margin:12px 0;background:#0b121d}.mod-item h3{margin:4px 0 8px;font-size:1rem}.meta{font-size:.78rem;color:var(--muted)}.actions{display:flex;gap:8px;flex-wrap:wrap;margin-top:10px}.actions button{border:1px solid #314157;border-radius:9px;padding:8px 10px;background:#121d2b;color:#d9e3f1;font-weight:750;cursor:pointer}.actions button.danger{border-color:#6c343c;background:#2a1519;color:#f1c2c8}.actions button.good{border-color:#2d614f;background:#10251e;color:#99e3c4}.status{display:none;padding:12px 14px;margin:12px 0;border-radius:10px;background:#10251e;border:1px solid #2d614f;color:#9ae2c4}.status.error{display:block;background:#2a1519;border-color:#6c343c;color:#f1c2c8}@media(max-width:850px){.admin-grid{grid-template-columns:1fr}}
+  </style>
+</head>
+<body>
+  <div class="topbar"><div class="wrap">RightsRadar UK administration</div></div>
+  <header><nav class="wrap"><a class="brand" href="index.html"><span class="brandmark">RR</span><span>RightsRadar UK</span></a><div class="navlinks"><a href="community.html">Community</a><a href="privacy.html">Privacy</a><a href="terms.html">Terms</a></div><button class="menu" aria-label="Menu">☰</button></nav></header>
+  <main class="article"><div class="wrap">
+    <article class="prose"><div class="crumbs"><a href="community.html">Community</a> / Moderation</div><div class="meta"><span class="pill">Admin only</span></div><h1>Community moderation</h1><p>Review reports and hide or restore community content. Hidden content is reversible and is not permanently deleted.</p></article>
+    <div id="adminStatus" class="status"></div>
+    <div class="admin-grid">
+      <section class="panel"><h2>Open reports</h2><div id="reports">Loading…</div></section>
+      <section class="panel"><h2>Recent conversations</h2><div id="threads">Loading…</div></section>
+      <section class="panel"><h2>Recent comments</h2><div id="comments">Loading…</div></section>
+      <section class="panel"><h2>Moderation notes</h2><p class="small">Use Hide when content should disappear from the public Community. Resolve a report after you have taken action. Dismiss only when no moderation action is needed.</p><p class="small">This dashboard is protected server-side. Knowing this page URL does not grant admin access.</p></section>
+    </div>
+  </div></main>
+  <footer><div class="wrap"><div class="footnote">© 2026 RightsRadar UK · Community moderation</div></div></footer>
+  <script src="assets/app.js"></script>
+  <script>
+    (()=>{
+      const reports=document.querySelector('#reports');
+      const threads=document.querySelector('#threads');
+      const comments=document.querySelector('#comments');
+      const status=document.querySelector('#adminStatus');
+      const esc=s=>String(s??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+      const fmt=d=>{try{return new Intl.DateTimeFormat('en-GB',{dateStyle:'medium',timeStyle:'short'}).format(new Date(d))}catch{return ''}};
+      const button=(action,id,label,cls='')=>`<button class="${cls}" data-action="${action}" data-id="${id}">${label}</button>`;
+
+      async function api(body){
+        const r=await fetch('/api/community-admin',{method:'POST',headers:{'content-type':'application/json'},body:JSON.stringify(body)});
+        const data=await r.json().catch(()=>({}));
+        if(!r.ok) throw new Error(data.error||'Moderation action failed.');
+        return data;
+      }
+
+      function show(message,error=false){status.style.display='block';status.className='status'+(error?' error':'');status.textContent=message;}
+
+      async function load(){
+        try{
+          const r=await fetch('/api/community-admin',{cache:'no-store'});
+          const data=await r.json().catch(()=>({}));
+          if(!r.ok) throw new Error(data.error||'Unable to load moderation dashboard.');
+          reports.innerHTML=(data.reports||[]).length?(data.reports||[]).map(x=>{
+            const isComment=Boolean(x.commentId);
+            const body=isComment?x.commentBody:x.threadBody;
+            const author=isComment?x.commentAuthor:x.threadAuthor;
+            const targetId=isComment?x.commentId:x.threadId;
+            const hideAction=isComment?'hide-comment':'hide-thread';
+            return `<article class="mod-item"><div class="meta">Report #${x.id} · ${fmt(x.createdAt)}</div><h3>${isComment?'Comment':'Conversation'} by ${esc(author||'Unknown')}</h3><p>${esc(body||'Content no longer exists.')}</p><p class="small"><strong>Reason:</strong> ${esc(x.reason)}</p><div class="actions">${targetId?button(hideAction,targetId,'Hide content','danger'):''}${button('resolve-report',x.id,'Resolve report','good')}${button('dismiss-report',x.id,'Dismiss')}</div></article>`;
+          }).join(''):'<p class="small">No open reports.</p>';
+
+          threads.innerHTML=(data.recentThreads||[]).length?(data.recentThreads||[]).map(x=>`<article class="mod-item"><div class="meta">#${x.id} · ${fmt(x.createdAt)} · ${esc(x.category)} · ${esc(x.jurisdiction)}</div><h3>${esc(x.title)}</h3><p>${esc(x.body)}</p><div class="meta">${esc(x.authorName)} · status: ${esc(x.status)}</div><div class="actions">${x.status==='published'?button('hide-thread',x.id,'Hide','danger'):button('restore-thread',x.id,'Restore','good')}</div></article>`).join(''):'<p class="small">No member conversations yet.</p>';
+
+          comments.innerHTML=(data.recentComments||[]).length?(data.recentComments||[]).map(x=>`<article class="mod-item"><div class="meta">Comment #${x.id} · ${fmt(x.createdAt)} · on ${esc(x.threadTitle)}</div><p>${esc(x.body)}</p><div class="meta">${esc(x.authorName)} · status: ${esc(x.status)}</div><div class="actions">${x.status==='published'?button('hide-comment',x.id,'Hide','danger'):button('restore-comment',x.id,'Restore','good')}</div></article>`).join(''):'<p class="small">No comments yet.</p>';
+        }catch(err){
+          reports.innerHTML=threads.innerHTML=comments.innerHTML='<p class="small">Unavailable.</p>';
+          show(err.message,true);
+        }
+      }
+
+      document.addEventListener('click',async e=>{
+        const b=e.target.closest('button[data-action]');
+        if(!b)return;
+        b.disabled=true;
+        try{const data=await api({action:b.dataset.action,id:Number(b.dataset.id)});show(data.message||'Updated.');await load();}
+        catch(err){show(err.message,true);}
+        finally{b.disabled=false;}
+      });
+      load();
+    })();
+  </script>
+</body>
+</html>

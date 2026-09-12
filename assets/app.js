@@ -101,6 +101,15 @@ if(nav&&!nav.querySelector('a[href$="alerts.html"]')){
   if(about) about.before(alerts); else nav.appendChild(alerts);
 }
 
+if(nav&&!nav.querySelector('a[href$="community.html"]')){
+  const about=[...nav.querySelectorAll('a')].find(a=>a.getAttribute('href')?.includes('about.html'));
+  const community=document.createElement('a');
+  const nested=location.pathname.includes('/guides/');
+  community.href=nested?'../community.html':'community.html';
+  community.textContent='Community';
+  if(about) about.before(community); else nav.appendChild(community);
+}
+
 const q=document.querySelector('#siteSearch');
 const region=document.querySelector('#regionFilter');
 const cards=[...document.querySelectorAll('[data-search]')];

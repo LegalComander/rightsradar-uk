@@ -92,6 +92,15 @@ if(nav&&!nav.querySelector('a[href$="protest-rights.html"]')){
   if(about) about.before(protest); else nav.appendChild(protest);
 }
 
+if(nav&&!nav.querySelector('a[href$="alerts.html"]')){
+  const about=[...nav.querySelectorAll('a')].find(a=>a.getAttribute('href')?.includes('about.html'));
+  const alerts=document.createElement('a');
+  const nested=location.pathname.includes('/guides/');
+  alerts.href=nested?'../alerts.html':'alerts.html';
+  alerts.textContent='Law alerts';
+  if(about) about.before(alerts); else nav.appendChild(alerts);
+}
+
 const q=document.querySelector('#siteSearch');
 const region=document.querySelector('#regionFilter');
 const cards=[...document.querySelectorAll('[data-search]')];
@@ -114,11 +123,22 @@ q?.addEventListener('input',filter);
 region?.addEventListener('change',filter);
 
 const form=document.querySelector('#alertForm');
-form?.addEventListener('submit',e=>{
-  e.preventDefault();
-  const email=form.querySelector('input[type=email]').value;
-  const area=form.querySelector('select').value;
-  localStorage.setItem('kyruk_alert_demo',JSON.stringify({email,area}));
-  const s=document.querySelector('#alertStatus');
-  if(s){s.style.display='block';s.textContent='Saved on this device for the demo. Email delivery will be connected in the accounts phase.';}
-});
+if(form){
+  const alertBox=form.closest('.alertbox');
+  const badge=alertBox?.querySelector('.eyebrow');
+  const small=alertBox?.querySelector('.small');
+  const heading=form.querySelector('h3');
+  const button=form.querySelector('button[type="submit"]');
+  if(badge) badge.textContent='🔔 Law Alerts beta';
+  if(small) small.textContent='Choose your jurisdiction and legal topics on the Law Alerts page. Beta registration is free.';
+  if(heading) heading.textContent='Set up law alerts';
+  if(button) button.textContent='Choose topics & register';
+  form.addEventListener('submit',e=>{
+    e.preventDefault();
+    const email=form.querySelector('input[type=email]')?.value||'';
+    const rawArea=form.querySelector('select')?.value||'scotland';
+    const map={ew:'england-wales',england:'england-wales','england-wales':'england-wales',ni:'northern-ireland','northern-ireland':'northern-ireland',scotland:'scotland',uk:'uk-wide','uk-wide':'uk-wide'};
+    const area=map[rawArea]||'scotland';
+    location.href=`alerts.html?email=${encodeURIComponent(email)}&jurisdiction=${encodeURIComponent(area)}`;
+  });
+}

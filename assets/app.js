@@ -1,51 +1,124 @@
-const menu=document.querySelector('.menu'); const nav=document.querySelector('.navlinks');
-if(menu&&nav)menu.addEventListener('click',()=>nav.classList.toggle('open'));
+const menu=document.querySelector('.menu');
+const nav=document.querySelector('.navlinks');
+if(menu&&nav) menu.addEventListener('click',()=>nav.classList.toggle('open'));
 
 const guideGrid=document.querySelector('#guideGrid');
-if(guideGrid){
-  const englandWalesExtras=`
-    <a class="card" data-search="england wales police questioning interview caution silence answer questions solicitor legal advice" data-region="ew" href="guides/police-questioning-england-wales.html"><div class="icon">🗣️</div><h3>Police questioning &amp; the caution</h3><p>What the caution means, how silence can matter, and why legal advice is important.</p><span class="tag">England &amp; Wales · verified</span></a>
-    <a class="card" data-search="england wales fingerprints dna photographs samples mouth swab police database biometrics" data-region="ew" href="guides/fingerprints-dna-england-wales.html"><div class="icon">🧬</div><h3>Fingerprints, photographs &amp; DNA</h3><p>What police can take without permission and the different rules for some intimate samples.</p><span class="tag">England &amp; Wales · verified</span></a>
-    <a class="card" data-search="england wales complain police complaint iopc professional standards review appeal misconduct" data-region="ew" href="guides/complain-police-england-wales.html"><div class="icon">📣</div><h3>Complain about the police</h3><p>How police complaints work, what the IOPC does, and when a review may be available.</p><span class="tag">England &amp; Wales · verified</span></a>
-    <a class="card" data-search="england wales under 18 child juvenile vulnerable adult police custody appropriate adult solicitor safeguards" data-region="ew" href="guides/young-vulnerable-custody-england-wales.html"><div class="icon">🛡️</div><h3>Young &amp; vulnerable people in custody</h3><p>Appropriate adults, legal advice and extra safeguards for children and vulnerable people.</p><span class="tag">England &amp; Wales · verified</span></a>
-    <a class="card" data-search="england wales charged crime charge sheet police custody first hearing court" data-region="ew" href="guides/charged-crime-england-wales.html"><div class="icon">📄</div><h3>Charged with a crime</h3><p>Charge sheets, release or custody, and what happens before the first court hearing.</p><span class="tag">England &amp; Wales · verified</span></a>
-    <a class="card" data-search="england wales bail police court conditions passport address contact report custody" data-region="ew" href="guides/bail-england-wales.html"><div class="icon">🔓</div><h3>Bail after charge</h3><p>Police bail, court bail, common conditions and what can happen if conditions are broken.</p><span class="tag">England &amp; Wales · verified</span></a>
-    <a class="card" data-search="england wales magistrates court criminal case summary either way district judge bail" data-region="ew" href="guides/magistrates-court-england-wales.html"><div class="icon">🏛️</div><h3>Magistrates’ Court</h3><p>Where criminal cases start, who hears them and which cases can move to the Crown Court.</p><span class="tag">England &amp; Wales · verified</span></a>
-    <a class="card" data-search="england wales crown court judge jury serious crime appeal sentence trial" data-region="ew" href="guides/crown-court-england-wales.html"><div class="icon">⚖️</div><h3>Crown Court</h3><p>Serious criminal cases, judge and jury roles, sentencing and appeals.</p><span class="tag">England &amp; Wales · verified</span></a>
-    <a class="card" data-search="england wales guilty not guilty plea trial sentence criminal court" data-region="ew" href="guides/pleas-england-wales.html"><div class="icon">🗣️</div><h3>Guilty or not guilty plea</h3><p>What each plea means and what normally happens next in a criminal case.</p><span class="tag">England &amp; Wales · verified</span></a>
-    <a class="card" data-search="england wales criminal legal aid solicitor court duty solicitor means test interests justice" data-region="ew" href="guides/criminal-legal-aid-england-wales.html"><div class="icon">💷</div><h3>Criminal legal aid</h3><p>Free police-station advice, court eligibility and how a solicitor applies for legal aid.</p><span class="tag">England &amp; Wales · verified</span></a>`;
-  const northernIrelandExtras=`
-    <a class="card" data-search="northern ireland psni police stop search reasonable grounds rights" data-region="ni" href="guides/stop-search-northern-ireland.html"><div class="icon">🔎</div><h3>Stopped &amp; searched by PSNI</h3><p>When stop-and-search powers can be used and the safeguards that apply.</p><span class="tag">Northern Ireland · verified</span></a>
-    <a class="card" data-search="northern ireland psni stop search record copy 12 months" data-region="ni" href="guides/stop-search-record-northern-ireland.html"><div class="icon">🗂️</div><h3>Get a stop-and-search record</h3><p>How to request a copy of your PSNI stop-and-search record.</p><span class="tag">Northern Ireland · verified</span></a>
-    <a class="card" data-search="northern ireland psni police arrest powers pace code g" data-region="ni" href="guides/arrest-powers-northern-ireland.html"><div class="icon">👮</div><h3>When can police arrest me?</h3><p>The PACE NI arrest framework and what happens after arrest.</p><span class="tag">Northern Ireland · verified</span></a>
-    <a class="card" data-search="northern ireland psni police custody rights detained solicitor food medical" data-region="ni" href="guides/custody-northern-ireland.html"><div class="icon">🚓</div><h3>Police custody rights</h3><p>Your main rights and safeguards while detained by police.</p><span class="tag">Northern Ireland · verified</span></a>
-    <a class="card" data-search="northern ireland police station free legal advice solicitor pace" data-region="ni" href="guides/legal-advice-police-station-northern-ireland.html"><div class="icon">⚖️</div><h3>Legal advice at the police station</h3><p>Private, independent legal advice while in custody.</p><span class="tag">Northern Ireland · verified</span></a>
-    <a class="card" data-search="northern ireland police questioning interview pace code c e f solicitor" data-region="ni" href="guides/police-questioning-northern-ireland.html"><div class="icon">🗣️</div><h3>Police questioning &amp; interviews</h3><p>Interview safeguards, recording and access to legal advice.</p><span class="tag">Northern Ireland · verified</span></a>
-    <a class="card" data-search="northern ireland police custody time 24 hours detention limit pace" data-region="ni" href="guides/custody-time-northern-ireland.html"><div class="icon">⏱️</div><h3>How long can police hold me?</h3><p>The ordinary 24-hour framework and rules for longer detention.</p><span class="tag">Northern Ireland · verified</span></a>
-    <a class="card" data-search="northern ireland custody contact family friend informed arrest phone" data-region="ni" href="guides/custody-contact-northern-ireland.html"><div class="icon">📞</div><h3>Tell someone I am in custody</h3><p>Having someone informed and communication during detention.</p><span class="tag">Northern Ireland · verified</span></a>
-    <a class="card" data-search="northern ireland appropriate adult child vulnerable police custody" data-region="ni" href="guides/appropriate-adult-northern-ireland.html"><div class="icon">🤝</div><h3>What is an Appropriate Adult?</h3><p>Support and safeguarding for children and vulnerable adults.</p><span class="tag">Northern Ireland · verified</span></a>
-    <a class="card" data-search="northern ireland young vulnerable child police custody safeguards appropriate adult" data-region="ni" href="guides/young-vulnerable-custody-northern-ireland.html"><div class="icon">🛡️</div><h3>Young &amp; vulnerable people in custody</h3><p>Extra safeguards during interviews and other custody procedures.</p><span class="tag">Northern Ireland · verified</span></a>
-    <a class="card" data-search="northern ireland custody medical doctor nurse interpreter communication support" data-region="ni" href="guides/medical-interpreter-custody-northern-ireland.html"><div class="icon">🩺</div><h3>Medical help &amp; interpreters</h3><p>Healthcare and communication support while in custody.</p><span class="tag">Northern Ireland · verified</span></a>
-    <a class="card" data-search="northern ireland fingerprints dna photographs biometric samples police" data-region="ni" href="guides/fingerprints-dna-northern-ireland.html"><div class="icon">🧬</div><h3>Fingerprints, photographs &amp; DNA</h3><p>Identification procedures and biometric material under PACE NI.</p><span class="tag">Northern Ireland · verified</span></a>
-    <a class="card" data-search="northern ireland police complaint ombudsman misconduct excessive force" data-region="ni" href="guides/complain-police-northern-ireland.html"><div class="icon">📣</div><h3>Complain about police</h3><p>How the independent Police Ombudsman complaints system works.</p><span class="tag">Northern Ireland · verified</span></a>
-    <a class="card" data-search="northern ireland charged crime pps prosecution court charge" data-region="ni" href="guides/charged-crime-northern-ireland.html"><div class="icon">📄</div><h3>Charged with a crime</h3><p>What happens after charge and before the first court appearance.</p><span class="tag">Northern Ireland · verified</span></a>
-    <a class="card" data-search="northern ireland bail court conditions remand custody pps" data-region="ni" href="guides/bail-northern-ireland.html"><div class="icon">🔓</div><h3>Bail after charge</h3><p>Bail decisions, conditions, risks and remand.</p><span class="tag">Northern Ireland · verified</span></a>
-    <a class="card" data-search="northern ireland magistrates court district judge criminal case summary" data-region="ni" href="guides/magistrates-court-northern-ireland.html"><div class="icon">🏛️</div><h3>Magistrates’ Court</h3><p>Summary cases and the route of more serious cases.</p><span class="tag">Northern Ireland · verified</span></a>
-    <a class="card" data-search="northern ireland crown court indictable judge jury serious crime appeal" data-region="ni" href="guides/crown-court-northern-ireland.html"><div class="icon">⚖️</div><h3>Crown Court</h3><p>Indictable offences, trials and criminal appeals.</p><span class="tag">Northern Ireland · verified</span></a>
-    <a class="card" data-search="northern ireland guilty not guilty plea sentence trial pps" data-region="ni" href="guides/criminal-plea-northern-ireland.html"><div class="icon">🗣️</div><h3>Guilty or not guilty plea</h3><p>What each plea means and what normally happens next.</p><span class="tag">Northern Ireland · verified</span></a>
-    <a class="card" data-search="northern ireland criminal legal aid solicitor magistrates crown court interests justice means" data-region="ni" href="guides/criminal-legal-aid-northern-ireland.html"><div class="icon">💷</div><h3>Criminal legal aid</h3><p>Police-station advice and court legal-aid eligibility.</p><span class="tag">Northern Ireland · verified</span></a>`;
-  const firstScotlandCard=guideGrid.querySelector('[data-region="scotland"]');
-  if(firstScotlandCard){firstScotlandCard.insertAdjacentHTML('beforebegin',englandWalesExtras+northernIrelandExtras)}
-  else guideGrid.insertAdjacentHTML('beforeend',englandWalesExtras+northernIrelandExtras);
+const dynamicGuides=[
+  // England & Wales — additional police/custody guides
+  ['ew','guides/arrest-powers-england-wales.html','👮','When can police arrest me?','Reasonable suspicion, necessity and what police must tell you.','england wales police arrest powers reasonable suspicion necessity pace code g'],
+  ['ew','guides/police-questioning-england-wales.html','🗣️','Police questioning & the caution','What the caution means, how silence can matter and why legal advice is important.','england wales police questioning interview caution silence solicitor legal advice'],
+  ['ew','guides/custody-contact-england-wales.html','📞','Tell someone I am in custody','Your right to have someone told where you are.','england wales police custody contact family friend tell someone informed'],
+  ['ew','guides/appropriate-adult-england-wales.html','🤝','What is an Appropriate Adult?','Support for children and vulnerable people during police procedures.','england wales appropriate adult child vulnerable police custody support'],
+  ['ew','guides/young-vulnerable-custody-england-wales.html','🛡️','Young & vulnerable people in custody','Extra safeguards for under-18s and vulnerable adults.','england wales under 18 child juvenile vulnerable adult police custody safeguards'],
+  ['ew','guides/medical-interpreter-custody-england-wales.html','🩺','Medical help & interpreters','Healthcare, language and communication support in custody.','england wales custody medical doctor interpreter communication language support'],
+  ['ew','guides/fingerprints-dna-england-wales.html','🧬','Fingerprints, photographs & DNA','Police powers over identification and biometric samples.','england wales fingerprints dna photographs samples biometrics police'],
+  ['ew','guides/stop-search-record-england-wales.html','🗂️','Get a stop-and-search record','How to obtain a copy after a police search.','england wales stop search record copy three months police'],
+  ['ew','guides/complain-police-england-wales.html','📣','Complain about the police','Police complaints, reviews and the IOPC.','england wales complain police complaint iopc professional standards review misconduct'],
+  // England & Wales — court
+  ['ew','guides/charged-crime-england-wales.html','📄','Charged with a crime','Charge sheets, release or custody, and the first court hearing.','england wales charged crime charge sheet court first hearing'],
+  ['ew','guides/bail-england-wales.html','🔓','Bail after charge','Police bail, court bail, conditions and remand.','england wales bail police court conditions remand custody'],
+  ['ew','guides/magistrates-court-england-wales.html','🏛️','Magistrates’ Court','Where criminal cases start and which cases move to Crown Court.','england wales magistrates court criminal case summary either way'],
+  ['ew','guides/crown-court-england-wales.html','⚖️','Crown Court','Serious criminal cases, judge and jury roles, sentencing and appeals.','england wales crown court judge jury serious crime appeal sentence trial'],
+  ['ew','guides/pleas-england-wales.html','🗣️','Guilty or not guilty plea','What each plea means and what normally happens next.','england wales guilty not guilty plea trial sentence criminal court'],
+  ['ew','guides/criminal-legal-aid-england-wales.html','💷','Criminal legal aid','Court eligibility and how a solicitor applies for legal aid.','england wales criminal legal aid solicitor court duty solicitor means interests justice'],
+  // England & Wales — protest/public order
+  ['ew','guides/protest-rights-england-wales.html','📢','Protest rights & police powers','Conditions, serious disruption, searches and public-order powers.','england wales protest demonstration march public order police conditions serious disruption'],
+  ['ew','guides/protest-face-coverings-england-wales.html','🥷','Masks & balaclavas at protests','The 2026 designated-area identity-concealment offence and exceptions.','england wales protest mask masks balaclava balaclavas face covering conceal identity designated area'],
+  ['ew','guides/protest-locking-on-england-wales.html','🔗','Locking-on & disruptive tactics','Locking-on, tunnelling, infrastructure offences and protest stop/search.','england wales protest locking on glue tunnel tunnelling infrastructure stop search public order act 2023'],
+  ['ew','guides/protest-new-offences-2026-england-wales.html','🆕','New protest laws in 2026','Pyrotechnics, memorials, homes, places of worship and cumulative disruption.','england wales protest 2026 flares fireworks pyrotechnics memorials homes place worship cumulative disruption'],
+  // Northern Ireland
+  ['ni','guides/stop-search-northern-ireland.html','🔎','Stopped & searched by PSNI','When stop-and-search powers can be used and the safeguards that apply.','northern ireland psni police stop search reasonable grounds rights'],
+  ['ni','guides/stop-search-record-northern-ireland.html','🗂️','Get a stop-and-search record','How to request a copy of your PSNI stop-and-search record.','northern ireland psni stop search record copy'],
+  ['ni','guides/arrest-powers-northern-ireland.html','👮','When can police arrest me?','The PACE NI arrest framework and what happens after arrest.','northern ireland psni police arrest powers pace code g'],
+  ['ni','guides/custody-northern-ireland.html','🚓','Police custody rights','Your main rights and safeguards while detained by police.','northern ireland psni police custody rights detained solicitor medical'],
+  ['ni','guides/legal-advice-police-station-northern-ireland.html','⚖️','Legal advice at the police station','Private, independent legal advice while in custody.','northern ireland police station legal advice solicitor pace'],
+  ['ni','guides/police-questioning-northern-ireland.html','🗣️','Police questioning & interviews','Interview safeguards, recording and access to legal advice.','northern ireland police questioning interview pace solicitor'],
+  ['ni','guides/custody-time-northern-ireland.html','⏱️','How long can police hold me?','The ordinary detention framework and rules for longer detention.','northern ireland police custody time detention limit pace'],
+  ['ni','guides/custody-contact-northern-ireland.html','📞','Tell someone I am in custody','Having someone informed and communication during detention.','northern ireland custody contact family friend informed arrest phone'],
+  ['ni','guides/appropriate-adult-northern-ireland.html','🤝','What is an Appropriate Adult?','Support and safeguarding for children and vulnerable adults.','northern ireland appropriate adult child vulnerable police custody'],
+  ['ni','guides/young-vulnerable-custody-northern-ireland.html','🛡️','Young & vulnerable people in custody','Extra safeguards during interviews and custody procedures.','northern ireland young vulnerable child police custody safeguards'],
+  ['ni','guides/medical-interpreter-custody-northern-ireland.html','🩺','Medical help & interpreters','Healthcare and communication support while in custody.','northern ireland custody medical doctor nurse interpreter communication'],
+  ['ni','guides/fingerprints-dna-northern-ireland.html','🧬','Fingerprints, photographs & DNA','Identification procedures and biometric material under PACE NI.','northern ireland fingerprints dna photographs biometric samples police'],
+  ['ni','guides/complain-police-northern-ireland.html','📣','Complain about police','How the independent Police Ombudsman complaints system works.','northern ireland police complaint ombudsman misconduct excessive force'],
+  ['ni','guides/charged-crime-northern-ireland.html','📄','Charged with a crime','What happens after charge and before the first court appearance.','northern ireland charged crime pps prosecution court charge'],
+  ['ni','guides/bail-northern-ireland.html','🔓','Bail after charge','Bail decisions, conditions, risks and remand.','northern ireland bail court conditions remand custody pps'],
+  ['ni','guides/magistrates-court-northern-ireland.html','🏛️','Magistrates’ Court','Summary cases and the route of more serious cases.','northern ireland magistrates court district judge criminal summary'],
+  ['ni','guides/crown-court-northern-ireland.html','⚖️','Crown Court','Indictable offences, trials and criminal appeals.','northern ireland crown court indictable judge jury serious crime appeal'],
+  ['ni','guides/criminal-plea-northern-ireland.html','🗣️','Guilty or not guilty plea','What each plea means and what normally happens next.','northern ireland guilty not guilty plea sentence trial pps'],
+  ['ni','guides/criminal-legal-aid-northern-ireland.html','💷','Criminal legal aid','Police-station advice and court legal-aid eligibility.','northern ireland criminal legal aid solicitor magistrates crown court'],
+  ['ni','guides/protest-rights-northern-ireland.html','📢','Protest rights & processions','PSNI guidance, processions, parade-related protests and notification rules.','northern ireland protest public procession parade parades commission demonstration psni'],
+  // Scotland — new protest guide
+  ['scotland','guides/protest-rights-scotland.html','📢','Protest rights, marches & demonstrations','Notification, police conditions and static demonstrations in Scotland.','scotland protest march parade demonstration police conditions public procession'],
+  // UK navigator
+  ['uk','protest-rights.html','📣','UK protest rights hub','Compare protest rules across Scotland, England & Wales and Northern Ireland.','uk protest rights demonstrations marches masks balaclavas public order']
+];
 
-  const niRegion=[...document.querySelectorAll('#regions .jurisdiction')].find(x=>x.querySelector('h3')?.textContent.includes('Northern Ireland'));
-  if(niRegion){const a=niRegion.querySelector('a');if(a){a.href='northern-ireland-rights.html';a.textContent='Browse Northern Ireland →'}}
-  const lead=document.querySelector('#rights .lead');if(lead)lead.textContent='Verified rights libraries are now live for Scotland, England & Wales and Northern Ireland.';
-  const note=document.querySelector('.searchnote');if(note)note.textContent='Search verified guides across Scotland, England & Wales and Northern Ireland.';
+function cardHtml([region,href,icon,title,desc,search]){
+  const label=region==='ew'?'England & Wales':region==='ni'?'Northern Ireland':region==='scotland'?'Scotland':'UK';
+  const cls=region==='scotland'?'tag scotland':'tag';
+  return `<a class="card" data-search="${search}" data-region="${region}" href="${href}"><div class="icon">${icon}</div><h3>${title}</h3><p>${desc}</p><span class="${cls}">${label} · verified</span></a>`;
 }
 
-const q=document.querySelector('#siteSearch'); const region=document.querySelector('#regionFilter'); const cards=[...document.querySelectorAll('[data-search]')]; const empty=document.querySelector('#emptySearch');
-function filter(){if(!q)return;const term=q.value.toLowerCase().trim();const reg=region?.value||'all';let shown=0;cards.forEach(c=>{const okText=!term||c.dataset.search.toLowerCase().includes(term);const okReg=reg==='all'||c.dataset.region===reg||c.dataset.region==='uk';const ok=okText&&okReg;c.style.display=ok?'block':'none';if(ok)shown++});if(empty)empty.style.display=shown?'none':'block'}
-q?.addEventListener('input',filter);region?.addEventListener('change',filter);
+if(guideGrid){
+  const existingHrefs=new Set([...guideGrid.querySelectorAll('a.card')].map(a=>a.getAttribute('href')));
+  const fresh=dynamicGuides.filter(g=>!existingHrefs.has(g[1]));
+  const firstScotland=guideGrid.querySelector('[data-region="scotland"]');
+  const html=fresh.map(cardHtml).join('');
+  if(firstScotland) firstScotland.insertAdjacentHTML('beforebegin',html);
+  else guideGrid.insertAdjacentHTML('beforeend',html);
+
+  const jurisdictions=[...document.querySelectorAll('#regions .jurisdiction')];
+  const setRegionLink=(name,href,text)=>{
+    const box=jurisdictions.find(x=>x.querySelector('h3')?.textContent.includes(name));
+    const a=box?.querySelector('a');
+    if(a){a.href=href;a.textContent=text;}
+  };
+  setRegionLink('Scotland','scotland-rights.html','Browse Scotland →');
+  setRegionLink('England & Wales','england-wales-rights.html','Browse England & Wales →');
+  setRegionLink('Northern Ireland','northern-ireland-rights.html','Browse Northern Ireland →');
+
+  const lead=document.querySelector('#rights .lead');
+  if(lead) lead.textContent='Verified rights libraries are live for Scotland, England & Wales and Northern Ireland, including dedicated protest and public-order guides.';
+  const note=document.querySelector('.searchnote');
+  if(note) note.textContent='Search verified guides across all three UK legal systems.';
+}
+
+if(nav&&!nav.querySelector('a[href$="protest-rights.html"]')){
+  const about=[...nav.querySelectorAll('a')].find(a=>a.getAttribute('href')?.includes('about.html'));
+  const protest=document.createElement('a');
+  const nested=location.pathname.includes('/guides/');
+  protest.href=nested?'../protest-rights.html':'protest-rights.html';
+  protest.textContent='Protest rights';
+  if(about) about.before(protest); else nav.appendChild(protest);
+}
+
+const q=document.querySelector('#siteSearch');
+const region=document.querySelector('#regionFilter');
+const cards=[...document.querySelectorAll('[data-search]')];
+const empty=document.querySelector('#emptySearch');
+function filter(){
+  if(!q)return;
+  const term=q.value.toLowerCase().trim();
+  const reg=region?.value||'all';
+  let shown=0;
+  cards.forEach(c=>{
+    const okText=!term||c.dataset.search.toLowerCase().includes(term);
+    const okReg=reg==='all'||c.dataset.region===reg||c.dataset.region==='uk';
+    const ok=okText&&okReg;
+    c.style.display=ok?'block':'none';
+    if(ok)shown++;
+  });
+  if(empty) empty.style.display=shown?'none':'block';
+}
+q?.addEventListener('input',filter);
+region?.addEventListener('change',filter);
+
 const form=document.querySelector('#alertForm');
-form?.addEventListener('submit',e=>{e.preventDefault();const email=form.querySelector('input[type=email]').value;const area=form.querySelector('select').value;localStorage.setItem('kyruk_alert_demo',JSON.stringify({email,area}));const s=document.querySelector('#alertStatus');s.style.display='block';s.textContent='Saved on this device for the demo. Email delivery will be connected in the accounts phase.'});
+form?.addEventListener('submit',e=>{
+  e.preventDefault();
+  const email=form.querySelector('input[type=email]').value;
+  const area=form.querySelector('select').value;
+  localStorage.setItem('kyruk_alert_demo',JSON.stringify({email,area}));
+  const s=document.querySelector('#alertStatus');
+  if(s){s.style.display='block';s.textContent='Saved on this device for the demo. Email delivery will be connected in the accounts phase.';}
+});

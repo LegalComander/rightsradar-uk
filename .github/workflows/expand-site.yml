@@ -55,12 +55,11 @@ jobs:
             mkdir -p "$(dirname "$out")"
             curl --fail --silent --show-error --location "$base$url" --output "$out"
           done
-          grep -RIl 'rightsradaruk-wotex1989-8654.vercel.app' . --exclude-dir=.git | xargs -r sed -i 's#https://rightsradaruk-wotex1989-8654.vercel.app#https://rightsradar-uk-three.vercel.app#g'
-          rm -f site.tar.gz
-      - name: Commit imported source
+          grep -RIl 'rightsradaruk-wotex1989-8654.vercel.app' index.html scotland-rights.html new-laws.html about.html privacy.html terms.html robots.txt sitemap.xml assets guides 2>/dev/null | xargs -r sed -i 's#https://rightsradaruk-wotex1989-8654.vercel.app#https://rightsradar-uk-three.vercel.app#g'
+      - name: Commit imported website files only
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          git add -A
+          git add index.html scotland-rights.html new-laws.html about.html privacy.html terms.html robots.txt sitemap.xml assets guides
           git diff --cached --quiet || git commit -m "Import full RightsRadar source"
           git push

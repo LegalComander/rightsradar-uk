@@ -1,0 +1,9 @@
+{
+  "name": "rightsradar-uk",
+  "version": "1.0.0",
+  "private": true,
+  "description": "RightsRadar UK independent legal-information website",
+  "dependencies": {
+    "@vercel/blob": "^1.0.2"
+  }
+}

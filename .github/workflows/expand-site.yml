@@ -4,6 +4,7 @@ on:
   push:
     paths:
       - site.tar.gz
+      - .bundle-trigger
   workflow_dispatch:
 
 permissions:

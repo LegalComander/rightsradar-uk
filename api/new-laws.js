@@ -57,7 +57,7 @@ function parseBills(xml) {
 }
 
 async function getText(url) {
-  const r = await fetch(url, { headers: { 'user-agent': 'RightsRadarUK/1.0 (+https://rightsradar-uk-three.vercel.app)' } });
+  const r = await fetch(url, { headers: { 'user-agent': 'RightsRadarUK/1.0 (+https://rightsradaruk.vercel.app)' } });
   if (!r.ok) throw new Error(`${r.status} from ${url}`);
   return r.text();
 }

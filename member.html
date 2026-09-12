@@ -1,0 +1,55 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <meta name="robots" content="noindex,follow">
+  <meta name="description" content="RightsRadar UK Community member profile.">
+  <title>Member profile | RightsRadar UK</title>
+  <link rel="icon" href="/favicon.svg" type="image/svg+xml">
+  <link rel="stylesheet" href="assets/styles.css">
+  <style>
+    .profile-grid{display:grid;grid-template-columns:280px minmax(0,1fr);gap:18px;align-items:start}.profile-card,.profile-main{background:linear-gradient(180deg,#101824,#0d141f);border:1px solid var(--line);border-radius:18px;padding:20px}.avatar{width:72px;height:72px;border-radius:50%;display:grid;place-items:center;background:#18335f;border:1px solid #31558b;font-size:1.45rem;font-weight:900;margin-bottom:12px}.profile-card h1{font-size:1.35rem;margin:0 0 6px}.profile-meta{font-size:.8rem;color:var(--muted)}.stats{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-top:16px}.stat{border:1px solid #26354a;border-radius:12px;padding:10px;text-align:center;background:#0a121d}.stat strong{display:block;font-size:1.1rem}.stat span{font-size:.68rem;color:var(--muted)}.profile-setting{margin-top:18px;padding-top:15px;border-top:1px solid var(--line)}.profile-setting select{width:100%;margin:7px 0;background:#09111b;color:var(--ink);border:1px solid #2a394f;border-radius:10px;padding:10px}.profile-setting button{width:100%}.profile-thread{padding:13px 0;border-top:1px solid var(--line)}.profile-thread:first-of-type{border-top:0}.profile-thread a{font-weight:850;text-decoration:none}.profile-thread .meta{font-size:.75rem;color:var(--muted);margin-top:4px}.topic-list{display:flex;gap:6px;flex-wrap:wrap}.topic-pill{border:1px solid #2e4f46;background:#10251f;color:#9adfc7;border-radius:999px;padding:5px 8px;font-size:.72rem}.profile-status{display:none;margin:12px 0;padding:10px;border-radius:10px;background:#10251f;border:1px solid #2d614f;color:#9ae2c4}.profile-status.error{display:block;background:#2a1519;border-color:#6c343c;color:#f1c2c8}@media(max-width:760px){.profile-grid{grid-template-columns:1fr}.stats{grid-template-columns:repeat(3,1fr)}}
+  </style>
+</head>
+<body>
+  <div class="topbar"><div class="wrap">Community profiles are user identities — <strong>&nbsp;not verified legal professionals.</strong></div></div>
+  <header><nav class="wrap"><a class="brand" href="index.html"><span class="brandmark">RR</span><span>RightsRadar UK</span></a><div class="navlinks"><a href="community.html">Community</a><a href="new-laws.html">New laws</a><a href="alerts.html">Law alerts</a><a href="about.html">About</a></div><button class="menu" aria-label="Menu">☰</button></nav></header>
+  <main class="article"><div class="wrap">
+    <div class="crumbs"><a href="community.html">Community</a> / Member profile</div>
+    <div id="profileStatus" class="profile-status"></div>
+    <div class="profile-grid" id="profileGrid"><div class="profile-card">Loading member…</div><div class="profile-main">Loading contributions…</div></div>
+  </div></main>
+  <footer><div class="wrap"><div class="footnote">© 2026 RightsRadar UK · Community profile · <a href="privacy.html">Privacy</a> · <a href="terms.html">Terms</a></div></div></footer>
+  <script src="assets/app.js"></script>
+  <script>
+  (()=>{
+    const grid=document.querySelector('#profileGrid');
+    const status=document.querySelector('#profileStatus');
+    const esc=s=>String(s??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+    const fmt=d=>{if(!d)return 'Unknown';try{return new Intl.DateTimeFormat('en-GB',{dateStyle:'medium'}).format(new Date(d))}catch{return 'Unknown'}};
+    const names={'uk-wide':'UK-wide','scotland':'Scotland','england-wales':'England & Wales','northern-ireland':'Northern Ireland'};
+    const topics={general:'General',police:'Police',housing:'Housing',benefits:'Benefits',protest:'Protest',courts:'Courts',driving:'Driving',employment:'Employment',consumer:'Consumer'};
+    function show(msg,error=false){status.style.display='block';status.className='profile-status'+(error?' error':'');status.textContent=msg;}
+    async function request(url,options={}){const r=await fetch(url,{credentials:'same-origin',cache:'no-store',...options});const data=await r.json().catch(()=>({}));if(!r.ok)throw new Error(data.error||'Request failed.');return data;}
+    async function load(){
+      const u=new URLSearchParams(location.search).get('u')||'';
+      try{
+        const data=await request(`/api/member${u?`?u=${encodeURIComponent(u)}`:''}`);
+        const m=data.member, s=data.stats||{};
+        const initials=(m.name||'M').split(/\s+/).slice(0,2).map(x=>x[0]||'').join('').toUpperCase();
+        const setting=data.isSelf?`<div class="profile-setting"><strong>Your default jurisdiction</strong><select id="profileJurisdiction"><option value="uk-wide">UK-wide</option><option value="scotland">Scotland</option><option value="england-wales">England & Wales</option><option value="northern-ireland">Northern Ireland</option></select><button class="btn btn-primary" id="saveProfile" type="button">Save profile</button></div>`:'';
+        const followed=data.isSelf?`<div class="profile-setting"><strong>Topics you follow</strong><div class="topic-list" style="margin-top:9px">${(data.followedTopics||[]).length?(data.followedTopics||[]).map(t=>`<span class="topic-pill">${esc(topics[t]||t)}</span>`).join(''):'<span class="profile-meta">No followed topics yet.</span>'}</div><p class="profile-meta"><a href="community.html">Manage followed topics in Community →</a></p></div>`:'';
+        const recent=(data.recentThreads||[]).length?(data.recentThreads||[]).map(t=>`<div class="profile-thread"><a href="community.html#thread-${t.id}">${esc(t.title)}</a><div class="meta">${esc(names[t.jurisdiction]||t.jurisdiction)} · ${esc(topics[t.category]||t.category)} · ${fmt(t.createdAt)} · ${Number(t.commentCount)||0} comments</div></div>`).join(''):'<p class="small">No public discussions yet.</p>';
+        grid.innerHTML=`<aside class="profile-card"><div class="avatar">${esc(initials)}</div><h1>${esc(m.name)}</h1><div class="profile-meta">Member since ${fmt(m.joinedAt)}</div><div class="profile-meta">Preferred jurisdiction: ${esc(names[m.preferredJurisdiction]||m.preferredJurisdiction)}</div><div class="stats"><div class="stat"><strong>${Number(s.threadCount)||0}</strong><span>Discussions</span></div><div class="stat"><strong>${Number(s.commentCount)||0}</strong><span>Comments</span></div><div class="stat"><strong>${Number(s.helpfulReceived)||0}</strong><span>Helpful</span></div></div>${setting}${followed}</aside><section class="profile-main"><h2>Recent discussions</h2><p class="small">Community contributions are user-generated and are not verified legal advice.</p>${recent}</section>`;
+        if(data.isSelf){
+          const select=document.querySelector('#profileJurisdiction');select.value=m.preferredJurisdiction||'uk-wide';
+          document.querySelector('#saveProfile').addEventListener('click',async e=>{e.currentTarget.disabled=true;try{await request('/api/community-features',{method:'POST',headers:{'content-type':'application/json'},body:JSON.stringify({action:'update-profile',preferredJurisdiction:select.value})});show('Profile updated.');setTimeout(load,250);}catch(err){show(err.message,true);}finally{e.currentTarget.disabled=false;}});
+        }
+      }catch(err){grid.innerHTML=`<div class="profile-card"><h1>Profile unavailable</h1><p>${esc(err.message)}</p><p><a href="community.html">Return to Community</a></p></div><div class="profile-main"></div>`;show(err.message,true);}
+    }
+    load();
+  })();
+  </script>
+</body>
+</html>

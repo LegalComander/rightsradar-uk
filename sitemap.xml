@@ -2,9 +2,12 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
 <url><loc>https://rightsradaruk.vercel.app/</loc></url>
 <url><loc>https://rightsradaruk.vercel.app/about.html</loc></url>
+<url><loc>https://rightsradaruk.vercel.app/england-wales-rights.html</loc></url>
 <url><loc>https://rightsradaruk.vercel.app/guides/answering-police-questions-scotland.html</loc></url>
+<url><loc>https://rightsradaruk.vercel.app/guides/appropriate-adult-england-wales.html</loc></url>
 <url><loc>https://rightsradaruk.vercel.app/guides/appropriate-adult-northern-ireland.html</loc></url>
 <url><loc>https://rightsradaruk.vercel.app/guides/appropriate-adult-scotland.html</loc></url>
+<url><loc>https://rightsradaruk.vercel.app/guides/arrest-powers-england-wales.html</loc></url>
 <url><loc>https://rightsradaruk.vercel.app/guides/arrest-powers-northern-ireland.html</loc></url>
 <url><loc>https://rightsradaruk.vercel.app/guides/arrest-powers-scotland.html</loc></url>
 <url><loc>https://rightsradaruk.vercel.app/guides/arrested-rights-england-wales.html</loc></url>
@@ -24,6 +27,7 @@
 <url><loc>https://rightsradaruk.vercel.app/guides/criminal-plea-scotland.html</loc></url>
 <url><loc>https://rightsradaruk.vercel.app/guides/crown-court-england-wales.html</loc></url>
 <url><loc>https://rightsradaruk.vercel.app/guides/crown-court-northern-ireland.html</loc></url>
+<url><loc>https://rightsradaruk.vercel.app/guides/custody-contact-england-wales.html</loc></url>
 <url><loc>https://rightsradaruk.vercel.app/guides/custody-contact-northern-ireland.html</loc></url>
 <url><loc>https://rightsradaruk.vercel.app/guides/custody-contact-scotland.html</loc></url>
 <url><loc>https://rightsradaruk.vercel.app/guides/custody-northern-ireland.html</loc></url>
@@ -39,13 +43,21 @@
 <url><loc>https://rightsradaruk.vercel.app/guides/legal-advice-police-station-northern-ireland.html</loc></url>
 <url><loc>https://rightsradaruk.vercel.app/guides/magistrates-court-england-wales.html</loc></url>
 <url><loc>https://rightsradaruk.vercel.app/guides/magistrates-court-northern-ireland.html</loc></url>
+<url><loc>https://rightsradaruk.vercel.app/guides/medical-interpreter-custody-england-wales.html</loc></url>
 <url><loc>https://rightsradaruk.vercel.app/guides/medical-interpreter-custody-northern-ireland.html</loc></url>
 <url><loc>https://rightsradaruk.vercel.app/guides/medical-interpreter-custody-scotland.html</loc></url>
 <url><loc>https://rightsradaruk.vercel.app/guides/pleas-england-wales.html</loc></url>
 <url><loc>https://rightsradaruk.vercel.app/guides/police-questioning-england-wales.html</loc></url>
 <url><loc>https://rightsradaruk.vercel.app/guides/police-questioning-northern-ireland.html</loc></url>
+<url><loc>https://rightsradaruk.vercel.app/guides/protest-face-coverings-england-wales.html</loc></url>
+<url><loc>https://rightsradaruk.vercel.app/guides/protest-locking-on-england-wales.html</loc></url>
+<url><loc>https://rightsradaruk.vercel.app/guides/protest-new-offences-2026-england-wales.html</loc></url>
+<url><loc>https://rightsradaruk.vercel.app/guides/protest-rights-england-wales.html</loc></url>
+<url><loc>https://rightsradaruk.vercel.app/guides/protest-rights-northern-ireland.html</loc></url>
+<url><loc>https://rightsradaruk.vercel.app/guides/protest-rights-scotland.html</loc></url>
 <url><loc>https://rightsradaruk.vercel.app/guides/stop-search-england-wales.html</loc></url>
 <url><loc>https://rightsradaruk.vercel.app/guides/stop-search-northern-ireland.html</loc></url>
+<url><loc>https://rightsradaruk.vercel.app/guides/stop-search-record-england-wales.html</loc></url>
 <url><loc>https://rightsradaruk.vercel.app/guides/stop-search-record-northern-ireland.html</loc></url>
 <url><loc>https://rightsradaruk.vercel.app/guides/stop-search-record-scotland.html</loc></url>
 <url><loc>https://rightsradaruk.vercel.app/guides/stop-search-scotland.html</loc></url>
@@ -56,6 +68,7 @@
 <url><loc>https://rightsradaruk.vercel.app/new-laws.html</loc></url>
 <url><loc>https://rightsradaruk.vercel.app/northern-ireland-rights.html</loc></url>
 <url><loc>https://rightsradaruk.vercel.app/privacy.html</loc></url>
+<url><loc>https://rightsradaruk.vercel.app/protest-rights.html</loc></url>
 <url><loc>https://rightsradaruk.vercel.app/scotland-rights.html</loc></url>
 <url><loc>https://rightsradaruk.vercel.app/terms.html</loc></url>
 </urlset>

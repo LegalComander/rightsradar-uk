@@ -67,13 +67,15 @@ Implemented:
 - Search plus jurisdiction and topic filters.
 - Automatic lightweight jurisdiction/topic classification for feed items.
 - Result counters and clearer status labels.
+- Save individual law/Bill updates on the device without an account.
+- Dedicated Saved filter retains a local snapshot even after an item drops out of the current live feed, while warning users to reopen the official source for the current position.
 
 Next:
 - Separate Coming into force and Recently changed views using verified commencement/change data.
-- Save/follow individual changes.
 - Effective-date warnings where official commencement data can be verified.
 - “What changed?” plain-English summaries after verification.
 - Improve classification from keyword rules toward source-backed metadata where available.
+- Optional account-based following later for cross-device sync; keep device-only saves as the privacy-first default.
 
 ## Phase 5 — Accessibility and language expansion
 

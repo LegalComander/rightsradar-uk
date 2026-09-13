@@ -27,6 +27,13 @@
   ],
   "shortcuts": [
     {
+      "name": "Ask RightsRadar",
+      "short_name": "Ask",
+      "description": "Search verified RightsRadar guides in plain English.",
+      "url": "/assistant.html",
+      "icons": [{"src": "/favicon.svg", "sizes": "any", "type": "image/svg+xml"}]
+    },
+    {
       "name": "Help now",
       "short_name": "Help now",
       "description": "Jump to the right legal-rights guide for your situation.",

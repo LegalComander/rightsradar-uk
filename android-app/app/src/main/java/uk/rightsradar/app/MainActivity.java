@@ -147,7 +147,7 @@ public class MainActivity extends Activity {
     }
 
     private void showLoadError(String url) {
-        retryUrl = url == null || url.isBlank() ? HOME_URL : url;
+        retryUrl = url == null || url.trim().isEmpty() ? HOME_URL : url;
         progressBar.setVisibility(View.GONE);
         webView.setVisibility(View.GONE);
         errorPanel.setVisibility(View.VISIBLE);

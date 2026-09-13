@@ -1,0 +1,68 @@
+name: Wire RightsRadar PWA
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - '.github/workflows/pwa-setup.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  wire-pwa:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Add PWA markup to public HTML pages
+        shell: python
+        run: |
+          from pathlib import Path
+
+          root = Path('.')
+          changed = []
+
+          for path in root.rglob('*.html'):
+              parts = set(path.parts)
+              if 'android-app' in parts or '.git' in parts or 'node_modules' in parts:
+                  continue
+              if path.name.startswith('admin-') or path.name == 'offline.html':
+                  continue
+
+              text = path.read_text(encoding='utf-8')
+              original = text
+
+              if 'rel="manifest"' not in text and '</head>' in text:
+                  text = text.replace(
+                      '</head>',
+                      '<link rel="manifest" href="/manifest.webmanifest"><meta name="theme-color" content="#070b12"><meta name="apple-mobile-web-app-capable" content="yes"></head>',
+                      1,
+                  )
+
+              if '/assets/pwa.js' not in text and '</body>' in text:
+                  text = text.replace('</body>', '<script src="/assets/pwa.js" defer></script></body>', 1)
+
+              if text != original:
+                  path.write_text(text, encoding='utf-8')
+                  changed.append(str(path))
+
+          print(f'Updated {len(changed)} HTML files')
+          for item in changed:
+              print(item)
+
+      - name: Commit PWA wiring
+        run: |
+          if git diff --quiet; then
+            echo "No PWA wiring changes needed"
+            exit 0
+          fi
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add -A
+          git commit -m "Enable installable RightsRadar PWA"
+          git push

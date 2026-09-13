@@ -1,0 +1,48 @@
+{
+  "id": "/",
+  "name": "RightsRadar UK",
+  "short_name": "RightsRadar",
+  "description": "Plain-English legal information across the UK, organised by jurisdiction and linked to official sources.",
+  "lang": "en-GB",
+  "start_url": "/?source=pwa",
+  "scope": "/",
+  "display": "standalone",
+  "orientation": "any",
+  "background_color": "#070b12",
+  "theme_color": "#070b12",
+  "categories": ["education", "reference", "news"],
+  "icons": [
+    {
+      "src": "/favicon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any"
+    },
+    {
+      "src": "/favicon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "maskable"
+    }
+  ],
+  "shortcuts": [
+    {
+      "name": "Your rights",
+      "short_name": "Rights",
+      "url": "/#rights",
+      "icons": [{"src": "/favicon.svg", "sizes": "any", "type": "image/svg+xml"}]
+    },
+    {
+      "name": "New laws",
+      "short_name": "New laws",
+      "url": "/new-laws.html",
+      "icons": [{"src": "/favicon.svg", "sizes": "any", "type": "image/svg+xml"}]
+    },
+    {
+      "name": "Law alerts",
+      "short_name": "Alerts",
+      "url": "/alerts.html",
+      "icons": [{"src": "/favicon.svg", "sizes": "any", "type": "image/svg+xml"}]
+    }
+  ]
+}

@@ -29,6 +29,9 @@ import android.widget.ProgressBar;
 import android.widget.Toast;
 import android.window.OnBackInvokedDispatcher;
 
+import com.google.firebase.FirebaseApp;
+import com.google.firebase.messaging.FirebaseMessaging;
+
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.LinkedHashSet;
@@ -38,14 +41,17 @@ import java.util.Set;
 
 public class MainActivity extends Activity {
 
-    private static final String HOME_URL = "https://rightsradaruk.vercel.app/";
-    private static final String NEW_LAWS_URL = HOME_URL + "new-laws.html";
+    static final String HOME_URL = "https://rightsradaruk.vercel.app/";
+    static final String NEW_LAWS_URL = HOME_URL + "new-laws.html";
+    static final String NOTIFICATION_CHANNEL_ID = "law_updates";
+    static final String EXTRA_NOTIFICATION_URL = "notification_url";
+    static final String FCM_TOPIC_NEW_LAWS = "new_laws";
+
     private static final String ALERTS_URL = HOME_URL + "alerts.html";
     private static final String APP_HOST = "rightsradaruk.vercel.app";
     private static final String PREFS_NAME = "rightsradar_android";
     private static final String PREF_SAVED_PAGES = "saved_pages";
     private static final String BOOKMARK_SEPARATOR = "\u001F";
-    private static final String NOTIFICATION_CHANNEL_ID = "law_updates";
     private static final int NOTIFICATION_PERMISSION_REQUEST = 1001;
 
     private WebView webView;
@@ -67,6 +73,7 @@ public class MainActivity extends Activity {
 
         applySystemBarInsets(root);
         createNotificationChannel();
+        configureFirebaseMessaging();
         configureWebView();
         configureNativeNavigation();
 
@@ -86,7 +93,19 @@ public class MainActivity extends Activity {
         if (savedInstanceState != null) {
             webView.restoreState(savedInstanceState);
         } else {
-            webView.loadUrl(resolveLaunchUrl());
+            webView.loadUrl(resolveLaunchUrl(getIntent()));
+        }
+    }
+
+    private void configureFirebaseMessaging() {
+        try {
+            FirebaseApp firebaseApp = FirebaseApp.initializeApp(this);
+            if (firebaseApp != null) {
+                FirebaseMessaging.getInstance().subscribeToTopic(FCM_TOPIC_NEW_LAWS);
+                ensureNotificationPermission();
+            }
+        } catch (IllegalStateException ignored) {
+            // Firebase becomes active once the project-specific google-services.json is supplied.
         }
     }
 
@@ -103,7 +122,7 @@ public class MainActivity extends Activity {
         settings.setSafeBrowsingEnabled(true);
         settings.setMediaPlaybackRequiresUserGesture(true);
         settings.setCacheMode(WebSettings.LOAD_DEFAULT);
-        settings.setUserAgentString(settings.getUserAgentString() + " RightsRadarAndroid/1.1");
+        settings.setUserAgentString(settings.getUserAgentString() + " RightsRadarAndroid/1.2");
 
         CookieManager cookieManager = CookieManager.getInstance();
         cookieManager.setAcceptCookie(true);
@@ -135,10 +154,20 @@ public class MainActivity extends Activity {
         findViewById(R.id.navShare).setOnClickListener(v -> shareCurrentPage());
     }
 
-    private String resolveLaunchUrl() {
-        Uri data = getIntent() == null ? null : getIntent().getData();
-        if (data != null && isInternal(data)) {
-            return data.toString();
+    private String resolveLaunchUrl(Intent intent) {
+        if (intent != null) {
+            String notificationUrl = intent.getStringExtra(EXTRA_NOTIFICATION_URL);
+            if (notificationUrl != null) {
+                Uri notificationUri = Uri.parse(notificationUrl);
+                if (isInternal(notificationUri)) {
+                    return notificationUrl;
+                }
+            }
+
+            Uri data = intent.getData();
+            if (data != null && isInternal(data)) {
+                return data.toString();
+            }
         }
         return HOME_URL;
     }
@@ -334,6 +363,16 @@ public class MainActivity extends Activity {
             webView.goBack();
         } else {
             finish();
+        }
+    }
+
+    @Override
+    protected void onNewIntent(Intent intent) {
+        super.onNewIntent(intent);
+        setIntent(intent);
+        String launchUrl = resolveLaunchUrl(intent);
+        if (webView != null) {
+            webView.loadUrl(launchUrl);
         }
     }
 

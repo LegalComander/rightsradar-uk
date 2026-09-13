@@ -6,5 +6,4 @@ local.properties
 captures/
 .externalNativeBuild/
 .cxx/
-app/google-services.json
 upload-keystore.jks

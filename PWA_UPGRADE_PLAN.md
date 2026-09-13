@@ -77,12 +77,19 @@ Next:
 - Improve classification from keyword rules toward source-backed metadata where available.
 - Optional account-based following later for cross-device sync; keep device-only saves as the privacy-first default.
 
-## Phase 5 — Accessibility and language expansion
+## Phase 5 — Accessibility and language expansion (started)
 
-- Persistent accessibility profile.
-- Simplified-reading mode.
+Implemented:
+- Persistent accessibility choices for text size, high contrast and reduced motion.
+- Read-aloud support where the browser provides speech synthesis.
+- Simplified-reading mode that keeps the same legal text, warnings and source links while narrowing the reading column and increasing line/paragraph spacing.
+- Simplified-reading preference is stored only on the device.
+- Escape-key support for closing the Settings sheet on keyboard devices.
+
+Next:
 - Additional language interfaces while keeping English official sources visible.
-- Better screen-reader landmarks and keyboard navigation.
+- Better screen-reader landmarks and keyboard navigation across every page.
+- Test accessibility against WCAG-focused automated checks and real keyboard/screen-reader flows.
 
 ## Privacy principle
 

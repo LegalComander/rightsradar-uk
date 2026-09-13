@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "164213242847",
+    "project_id": "rights-radar-uk",
+    "storage_bucket": "rights-radar-uk.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:164213242847:android:f627d09010036ad1e1226a",
+        "android_client_info": {
+          "package_name": "uk.rightsradar.app"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCWG42f4rJJiQtsXcddrjhIOJIWxYWO2c0"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

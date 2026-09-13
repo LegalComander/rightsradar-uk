@@ -27,15 +27,22 @@
   ],
   "shortcuts": [
     {
-      "name": "Your rights",
-      "short_name": "Rights",
-      "url": "/#rights",
+      "name": "Help now",
+      "short_name": "Help now",
+      "description": "Jump to the right legal-rights guide for your situation.",
+      "url": "/quick-help.html",
       "icons": [{"src": "/favicon.svg", "sizes": "any", "type": "image/svg+xml"}]
     },
     {
-      "name": "New laws",
-      "short_name": "New laws",
+      "name": "Law Change Radar",
+      "short_name": "Radar",
       "url": "/new-laws.html",
+      "icons": [{"src": "/favicon.svg", "sizes": "any", "type": "image/svg+xml"}]
+    },
+    {
+      "name": "Saved pages",
+      "short_name": "Saved",
+      "url": "/saved.html",
       "icons": [{"src": "/favicon.svg", "sizes": "any", "type": "image/svg+xml"}]
     },
     {

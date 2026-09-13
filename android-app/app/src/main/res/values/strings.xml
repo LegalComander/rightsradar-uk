@@ -4,4 +4,18 @@
     <string name="offline_title">Can’t reach RightsRadar</string>
     <string name="offline_message">Check your internet connection and try again.</string>
     <string name="retry">Retry</string>
+    <string name="nav_home">Home</string>
+    <string name="nav_laws">Laws</string>
+    <string name="nav_alerts">Alerts</string>
+    <string name="nav_save">Save</string>
+    <string name="nav_saved">Saved</string>
+    <string name="nav_share">Share</string>
+    <string name="saved_title">Saved RightsRadar pages</string>
+    <string name="saved_empty">You haven’t saved any pages yet.</string>
+    <string name="saved_added">Page saved</string>
+    <string name="saved_removed">Page removed from saved pages</string>
+    <string name="clear_saved">Clear all</string>
+    <string name="share_page">Share this RightsRadar page</string>
+    <string name="notification_channel_name">Law change alerts</string>
+    <string name="notification_channel_description">Updates about new and changing UK laws you choose to follow.</string>
 </resources>

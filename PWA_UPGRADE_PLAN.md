@@ -15,7 +15,7 @@ This plan turns the installable website into a practical mobile legal-rights app
 - Guide verification/source-transparency panel showing jurisdiction, review date and linked official-source count.
 - Privacy notice explains local device storage.
 
-## Phase 2 — Law-change notifications (in progress)
+## Phase 2 — Law-change notifications (delivery code implemented; production keys pending)
 
 Implemented:
 - Browser push-subscription API and database schema.
@@ -24,12 +24,21 @@ Implemented:
 - Web Push service-worker display and notification-click deep links.
 - Unsubscribe controls.
 - Confirmation notification support after subscription.
-- Law Alerts database endpoint fixed and verified live.
+- Law Alerts database endpoint fixed and verified live previously.
+- Secure law-alert dispatcher endpoint.
+- Official published-law events are matched against subscription jurisdiction and topic preferences.
+- Duplicate-delivery protection prevents the same event being pushed twice to the same endpoint.
+- Expired browser push endpoints are automatically marked inactive.
+- Dispatcher only alerts on published legislation; Parliamentary Bills are not pushed as enacted law.
+- Daily Vercel cron definition added for the dispatcher.
 
-Still required before phone push can be switched on:
+Still required before automatic phone delivery can run in production:
 - Add `VAPID_PUBLIC_KEY` and `VAPID_PRIVATE_KEY` as Vercel deployment secrets. The private key must never be committed to GitHub.
-- Connect the notification sender to verified law-change events.
-- Add automated delivery rules and duplicate-prevention state.
+- Add `CRON_SECRET` as a Vercel deployment secret so the scheduled dispatcher can authenticate securely.
+- Test a real browser/PWA notification on a physical phone after the keys are present.
+- Review topic-classification accuracy against real law-feed entries and expand rules where necessary.
+
+Email alert delivery remains a separate future step; email preferences can be stored but there is not yet a transactional email sender.
 
 ## Phase 3 — Verified RightsRadar Assistant
 
@@ -39,13 +48,22 @@ Still required before phone push can be switched on:
 - Refuses to invent a rule when the verified source library does not support an answer.
 - Quick actions from the Help Now screen into the assistant.
 
-## Phase 4 — Law Change Radar 2.0
+## Phase 4 — Law Radar 2.0 (partly implemented)
 
-- Separate views for Published law, Proposed Bills, Coming into force and Recently changed.
-- Topic and jurisdiction filters.
+Implemented:
+- Live official feeds for newly published legislation and Parliamentary Bills.
+- Published-law and proposed-Bill separation.
+- Source-health reporting for legislation.gov.uk and UK Parliament Bills.
+- Search plus jurisdiction and topic filters.
+- Automatic lightweight jurisdiction/topic classification for feed items.
+- Result counters and clearer status labels.
+
+Next:
+- Separate Coming into force and Recently changed views using verified commencement/change data.
 - Save/follow individual changes.
-- Effective-date warnings and source status.
+- Effective-date warnings where official commencement data can be verified.
 - “What changed?” plain-English summaries after verification.
+- Improve classification from keyword rules toward source-backed metadata where available.
 
 ## Phase 5 — Accessibility and language expansion
 

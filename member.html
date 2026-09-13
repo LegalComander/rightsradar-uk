@@ -11,7 +11,7 @@
   <style>
     .profile-grid{display:grid;grid-template-columns:280px minmax(0,1fr);gap:18px;align-items:start}.profile-card,.profile-main{background:linear-gradient(180deg,#101824,#0d141f);border:1px solid var(--line);border-radius:18px;padding:20px}.avatar{width:72px;height:72px;border-radius:50%;display:grid;place-items:center;background:#18335f;border:1px solid #31558b;font-size:1.45rem;font-weight:900;margin-bottom:12px}.profile-card h1{font-size:1.35rem;margin:0 0 6px}.profile-meta{font-size:.8rem;color:var(--muted)}.stats{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-top:16px}.stat{border:1px solid #26354a;border-radius:12px;padding:10px;text-align:center;background:#0a121d}.stat strong{display:block;font-size:1.1rem}.stat span{font-size:.68rem;color:var(--muted)}.profile-setting{margin-top:18px;padding-top:15px;border-top:1px solid var(--line)}.profile-setting select{width:100%;margin:7px 0;background:#09111b;color:var(--ink);border:1px solid #2a394f;border-radius:10px;padding:10px}.profile-setting button{width:100%}.profile-thread{padding:13px 0;border-top:1px solid var(--line)}.profile-thread:first-of-type{border-top:0}.profile-thread a{font-weight:850;text-decoration:none}.profile-thread .meta{font-size:.75rem;color:var(--muted);margin-top:4px}.topic-list{display:flex;gap:6px;flex-wrap:wrap}.topic-pill{border:1px solid #2e4f46;background:#10251f;color:#9adfc7;border-radius:999px;padding:5px 8px;font-size:.72rem}.profile-status{display:none;margin:12px 0;padding:10px;border-radius:10px;background:#10251f;border:1px solid #2d614f;color:#9ae2c4}.profile-status.error{display:block;background:#2a1519;border-color:#6c343c;color:#f1c2c8}@media(max-width:760px){.profile-grid{grid-template-columns:1fr}.stats{grid-template-columns:repeat(3,1fr)}}
   </style>
-</head>
+<link rel="manifest" href="/manifest.webmanifest"><meta name="theme-color" content="#070b12"><meta name="apple-mobile-web-app-capable" content="yes"></head>
 <body>
   <div class="topbar"><div class="wrap">Community profiles are user identities — <strong>&nbsp;not verified legal professionals.</strong></div></div>
   <header><nav class="wrap"><a class="brand" href="index.html"><span class="brandmark">RR</span><span>RightsRadar UK</span></a><div class="navlinks"><a href="community.html">Community</a><a href="new-laws.html">New laws</a><a href="alerts.html">Law alerts</a><a href="about.html">About</a></div><button class="menu" aria-label="Menu">☰</button></nav></header>
@@ -51,5 +51,5 @@
     load();
   })();
   </script>
-</body>
+<script src="/assets/pwa.js" defer></script></body>
 </html>

@@ -1,4 +1,4 @@
-const CACHE_VERSION = 'rightsradar-pwa-v2';
+const CACHE_VERSION = 'rightsradar-pwa-v3';
 const STATIC_CACHE = `${CACHE_VERSION}-static`;
 const RUNTIME_CACHE = `${CACHE_VERSION}-runtime`;
 const SAVED_CACHE = `${CACHE_VERSION}-saved`;
@@ -12,6 +12,7 @@ const CORE_ASSETS = [
   '/assets/styles.css',
   '/assets/app.js',
   '/assets/pwa.js',
+  '/assets/pwa-settings.js',
   '/assets/pwa-experience.css',
   '/favicon.svg',
   '/manifest.webmanifest',

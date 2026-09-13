@@ -31,12 +31,12 @@ function validEmail(email) {
 }
 
 function getSql() {
-  if (!process.env.DATABASE_URL) return null;
-  return neon(process.env.DATABASE_URL);
+  const connectionString = process.env.DATABASE_URL || process.env.POSTGRES_URL || process.env.DATABASE_URL_UNPOOLED || '';
+  return connectionString ? neon(connectionString) : null;
 }
 
 async function ensureSchema(sql) {
-  await sql(`
+  await sql`
     CREATE TABLE IF NOT EXISTS law_alert_subscribers (
       id TEXT PRIMARY KEY,
       email TEXT NOT NULL UNIQUE,
@@ -49,9 +49,9 @@ async function ensureSchema(sql) {
       created_at TIMESTAMPTZ NOT NULL DEFAULT NOW(),
       updated_at TIMESTAMPTZ NOT NULL DEFAULT NOW()
     )
-  `);
-  await sql(`CREATE INDEX IF NOT EXISTS law_alert_subscribers_status_idx ON law_alert_subscribers(status)`);
-  await sql(`CREATE INDEX IF NOT EXISTS law_alert_subscribers_jurisdiction_idx ON law_alert_subscribers(jurisdiction)`);
+  `;
+  await sql`CREATE INDEX IF NOT EXISTS law_alert_subscribers_status_idx ON law_alert_subscribers(status)`;
+  await sql`CREATE INDEX IF NOT EXISTS law_alert_subscribers_jurisdiction_idx ON law_alert_subscribers(jurisdiction)`;
 }
 
 module.exports = async function handler(req, res) {
@@ -97,20 +97,20 @@ module.exports = async function handler(req, res) {
     const now = new Date().toISOString();
     const topicsJson = JSON.stringify(topics);
 
-    const rows = await sql(
-      `INSERT INTO law_alert_subscribers
+    const rows = await sql`
+      INSERT INTO law_alert_subscribers
         (id, email, jurisdiction, topics, frequency, plan, status, consent_at, updated_at)
-       VALUES ($1, $2, $3, $4::jsonb, $5, 'free-beta', 'registered', $6, $6)
-       ON CONFLICT (email) DO UPDATE SET
-         jurisdiction = EXCLUDED.jurisdiction,
-         topics = EXCLUDED.topics,
-         frequency = EXCLUDED.frequency,
-         status = 'registered',
-         consent_at = EXCLUDED.consent_at,
-         updated_at = EXCLUDED.updated_at
-       RETURNING plan, status`,
-      [id, email, jurisdiction, topicsJson, frequency, now]
-    );
+      VALUES
+        (${id}, ${email}, ${jurisdiction}, ${topicsJson}::jsonb, ${frequency}, 'free-beta', 'registered', ${now}, ${now})
+      ON CONFLICT (email) DO UPDATE SET
+        jurisdiction = EXCLUDED.jurisdiction,
+        topics = EXCLUDED.topics,
+        frequency = EXCLUDED.frequency,
+        status = 'registered',
+        consent_at = EXCLUDED.consent_at,
+        updated_at = EXCLUDED.updated_at
+      RETURNING plan, status
+    `;
 
     return send(res, 201, {
       ok: true,

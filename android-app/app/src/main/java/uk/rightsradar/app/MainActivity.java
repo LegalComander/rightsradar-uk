@@ -166,6 +166,7 @@ public class MainActivity extends Activity {
         }
     }
 
+    @SuppressLint("GestureBackNavigation")
     @SuppressWarnings("deprecation")
     @Override
     public void onBackPressed() {

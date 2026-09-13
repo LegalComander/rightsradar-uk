@@ -40,13 +40,23 @@ Still required before automatic phone delivery can run in production:
 
 Email alert delivery remains a separate future step; email preferences can be stored but there is not yet a transactional email sender.
 
-## Phase 3 — Verified RightsRadar Assistant
+## Phase 3 — Verified RightsRadar Assistant (privacy-first beta implemented)
 
-- Dedicated assistant screen.
-- Answers grounded in RightsRadar verified guides and official-source links only.
-- Always shows jurisdiction, source links, last-checked status and a legal-information disclaimer.
-- Refuses to invent a rule when the verified source library does not support an answer.
-- Quick actions from the Help Now screen into the assistant.
+Implemented:
+- Dedicated `Ask RightsRadar` screen.
+- Plain-English question matching against the verified guide catalogue for Scotland, England & Wales and Northern Ireland.
+- Jurisdiction choice follows the device-only RightsRadar preference.
+- Matching is performed in the browser; questions are not sent to an AI model and are not stored by an account in this beta.
+- Results open the real verified guide, show the guide jurisdiction, display the review/last-checked label when present and surface official-source links from that guide.
+- The assistant does not generate or invent a legal rule. If the catalogue does not contain a reliable match, it says there is not enough verified information and routes the user to Help Now instead.
+- Quick Help links into the assistant and the PWA manifest includes an Ask RightsRadar shortcut.
+- Assistant shell and matching script are cached by the PWA for reliable access.
+
+Next:
+- Expand the catalogue as new verified guides are added.
+- Improve intent matching and typo tolerance without sending questions off-device.
+- Add structured answer cards using only pre-verified guide passages.
+- Consider an optional generative layer later only if it can remain strictly grounded in verified RightsRadar/official sources, clearly cite its sources, and meet privacy/cost requirements.
 
 ## Phase 4 — Law Radar 2.0 (partly implemented)
 

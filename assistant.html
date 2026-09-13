@@ -1,0 +1,55 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <meta name="description" content="Ask RightsRadar searches verified UK legal-rights guides on your device and shows the matching jurisdiction, review date and official sources.">
+  <title>Ask RightsRadar | RightsRadar UK</title>
+  <link rel="canonical" href="https://rightsradaruk.vercel.app/assistant.html">
+  <link rel="icon" href="/favicon.svg" type="image/svg+xml">
+  <link rel="stylesheet" href="/assets/styles.css">
+  <link rel="stylesheet" href="/assets/pwa-experience.css">
+  <link rel="manifest" href="/manifest.webmanifest">
+  <meta name="theme-color" content="#070b12">
+  <style>
+    .ask-shell{max-width:900px;margin:0 auto}.ask-panel{border:1px solid #2b3a50;background:linear-gradient(180deg,#101a29,#0b131e);border-radius:22px;padding:22px;margin-top:18px}.ask-grid{display:grid;grid-template-columns:1fr auto;gap:10px;align-items:end}.ask-grid textarea{width:100%;min-height:112px;resize:vertical;background:#08111c;color:#eef4ff;border:1px solid #344861;border-radius:14px;padding:14px;font:inherit;line-height:1.5}.ask-grid textarea:focus{outline:2px solid #4f79d6;outline-offset:2px}.ask-grid button{min-height:50px}.ask-tools{display:flex;gap:10px;flex-wrap:wrap;align-items:center;margin-top:12px}.ask-tools select{background:#08111c;color:#fff;border:1px solid #344861;border-radius:10px;padding:9px 11px;font:inherit}.ask-example-row{display:flex;gap:7px;flex-wrap:wrap;margin-top:13px}.ask-example{border:1px solid #31445f;background:#0d1826;color:#d9e4f3;border-radius:999px;padding:7px 10px;font:inherit;font-size:.78rem;cursor:pointer}.ask-status{margin-top:14px;color:#a8b5c8;font-size:.87rem}.ask-results{display:grid;gap:14px;margin-top:20px}.ask-result{border:1px solid #2c3d55;background:#0d1724;border-radius:18px;padding:18px}.ask-result h2{font-size:1.08rem;margin:6px 0}.ask-meta{display:flex;gap:7px;flex-wrap:wrap}.ask-pill{font-size:.72rem;border:1px solid #355076;background:#10203a;color:#cfe0fb;border-radius:999px;padding:5px 8px}.ask-match{color:#aab8cb;margin:.25rem 0 .7rem}.ask-extract{padding:12px 13px;border-left:3px solid #426bc5;background:#0a1320;border-radius:0 10px 10px 0;color:#dbe4ef}.ask-sources{margin-top:11px}.ask-sources a{display:block;margin:5px 0}.ask-warning{padding:14px;border:1px solid #6a5830;background:#28200d;color:#f2d88d;border-radius:14px;margin-top:16px}.ask-private{padding:13px;border:1px solid #28533f;background:#0e241c;color:#9ee1bf;border-radius:14px;margin-top:14px}.ask-empty{border:1px dashed #3a4c66;border-radius:16px;padding:20px;color:#9dacbf}.ask-actions{display:flex;gap:8px;flex-wrap:wrap;margin-top:12px}@media(max-width:680px){.ask-grid{grid-template-columns:1fr}.ask-grid button{width:100%}}
+  </style>
+</head>
+<body>
+  <div class="topbar"><div class="wrap">Verified-guide search — <strong>&nbsp;general legal information, not personalised legal advice.</strong></div></div>
+  <header><nav class="wrap"><a class="brand" href="/"><span class="brandmark">RR</span><span>RightsRadar UK</span></a><div class="navlinks"><a href="/quick-help.html">Help now</a><a href="/new-laws.html">Law Radar</a><a href="/saved.html">Saved</a><a href="/about.html">About</a></div><button class="menu" aria-label="Menu">☰</button></nav></header>
+  <main class="article"><div class="wrap ask-shell">
+    <span class="eyebrow">🛡️ Verified assistant beta</span>
+    <h1>Ask RightsRadar</h1>
+    <p>Describe what is happening in plain English. This beta searches the RightsRadar verified guide library and returns only material already published in those guides. It does not invent a legal rule.</p>
+    <div class="ask-private"><strong>Privacy-first:</strong> your question is matched in your browser. This beta does not send the question to an AI model or save it to an account.</div>
+
+    <section class="ask-panel" aria-labelledby="askHeading">
+      <h2 id="askHeading" style="margin-top:0">What do you want to know?</h2>
+      <div class="ask-grid">
+        <textarea id="askQuestion" maxlength="600" placeholder="Example: Police stopped me in Scotland and want to search my bag. What should they explain?" aria-label="Question for RightsRadar"></textarea>
+        <button id="askSubmit" class="btn btn-primary" type="button">Search verified guides</button>
+      </div>
+      <div class="ask-tools"><label for="askJurisdiction"><strong>Legal system</strong></label><select id="askJurisdiction"><option value="scotland">Scotland</option><option value="england-wales">England & Wales</option><option value="northern-ireland">Northern Ireland</option></select></div>
+      <div class="ask-example-row" aria-label="Example questions">
+        <button class="ask-example" type="button">Can police search me?</button>
+        <button class="ask-example" type="button">How long can police hold me?</button>
+        <button class="ask-example" type="button">Can I get a solicitor?</button>
+        <button class="ask-example" type="button">What happens if I am charged?</button>
+        <button class="ask-example" type="button">What are my protest rights?</button>
+      </div>
+      <div id="askStatus" class="ask-status" aria-live="polite"></div>
+    </section>
+
+    <div id="askResults" class="ask-results"></div>
+    <div class="ask-warning"><strong>Important:</strong> RightsRadar provides general legal information. If you are under arrest, facing a deadline, at risk of losing your liberty, or need advice about your own case, speak to a qualified solicitor or the appropriate official service.</div>
+  </div></main>
+  <footer><div class="wrap"><div class="footnote">© 2026 RightsRadar UK · Independent project · <a href="/privacy.html">Privacy</a> · <a href="/terms.html">Terms</a></div></div></footer>
+  <script src="/assets/app.js"></script>
+  <script src="/assets/assistant.js" defer></script>
+  <script src="/assets/pwa.js" defer></script>
+  <script src="/assets/pwa-settings.js" defer></script>
+  <script src="/assets/push-alerts.js" defer></script>
+  <script src="/assets/trust-panel.js" defer></script>
+</body>
+</html>

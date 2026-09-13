@@ -44,14 +44,15 @@ jobs:
                       1,
                   )
 
-              if '/assets/pwa.js' not in text and '</body>' in text:
-                  text = text.replace('</body>', '<script src="/assets/pwa.js" defer></script></body>', 1)
-
-              if '/assets/pwa-settings.js' not in text and '</body>' in text:
-                  text = text.replace('</body>', '<script src="/assets/pwa-settings.js" defer></script></body>', 1)
-
-              if '/assets/push-alerts.js' not in text and '</body>' in text:
-                  text = text.replace('</body>', '<script src="/assets/push-alerts.js" defer></script></body>', 1)
+              scripts = [
+                  '/assets/pwa.js',
+                  '/assets/pwa-settings.js',
+                  '/assets/push-alerts.js',
+                  '/assets/trust-panel.js',
+              ]
+              for script in scripts:
+                  if script not in text and '</body>' in text:
+                      text = text.replace('</body>', f'<script src="{script}" defer></script></body>', 1)
 
               if text != original:
                   path.write_text(text, encoding='utf-8')
@@ -70,5 +71,5 @@ jobs:
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
           git add -A
-          git commit -m "Enable RightsRadar PWA phone alerts client"
+          git commit -m "Enable RightsRadar PWA trust and notification scripts"
           git push

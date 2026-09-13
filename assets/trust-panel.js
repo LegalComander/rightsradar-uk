@@ -1,7 +1,31 @@
 (() => {
-  if (!location.pathname.startsWith('/guides/')) return;
+  function refreshHomepageStatus() {
+    const path = location.pathname;
+    if (!(path === '/' || path.endsWith('/index.html'))) return;
 
-  function init() {
+    const lawCard = [...document.querySelectorAll('#guideGrid .card')].find(card => card.getAttribute('href') === 'new-laws.html');
+    if (lawCard) {
+      const title = lawCard.querySelector('h3');
+      const desc = lawCard.querySelector('p');
+      const tag = lawCard.querySelector('.tag');
+      if (title) title.textContent = 'Law Radar: new & changing laws';
+      if (desc) desc.textContent = 'Live official-source monitoring of published legislation and Parliamentary Bills, with filters and source health.';
+      if (tag) { tag.textContent = 'Live official-source monitor'; tag.classList.remove('planned'); }
+    }
+
+    const alertBox = document.querySelector('#alerts .alertbox');
+    if (alertBox) {
+      const badge = alertBox.querySelector('.eyebrow');
+      const heading = alertBox.querySelector('h2');
+      const intro = alertBox.querySelector('p');
+      if (badge) badge.textContent = '🔔 Law Alerts beta';
+      if (heading) heading.textContent = 'Follow legal changes that matter to you';
+      if (intro) intro.textContent = 'Choose a jurisdiction and topics. Browser phone-alert subscriptions, saved preferences and verified-law dispatch infrastructure are now built; secure production notification keys are the remaining switch for automatic phone delivery.';
+    }
+  }
+
+  function initTrustPanel() {
+    if (!location.pathname.startsWith('/guides/')) return;
     const article = document.querySelector('.prose');
     const heading = article?.querySelector('h1');
     const sourceBox = article?.querySelector('.sourcebox');
@@ -38,6 +62,11 @@
 
     const saveButton = heading.nextElementSibling?.classList?.contains('rr-save-page') ? heading.nextElementSibling : null;
     (saveButton || heading).insertAdjacentElement('afterend', panel);
+  }
+
+  function init() {
+    refreshHomepageStatus();
+    initTrustPanel();
   }
 
   if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', init, { once: true });

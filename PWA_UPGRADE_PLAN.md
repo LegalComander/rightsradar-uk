@@ -5,22 +5,31 @@ This plan turns the installable website into a practical mobile legal-rights app
 ## Phase 1 — App-like core (implemented)
 
 - Mobile bottom navigation: Home, Help now, Law Radar, Saved, Settings.
+- Desktop Settings launcher plus mobile Settings access.
 - Quick Help / “I need help now” screen with jurisdiction-aware routes for stop/search, arrest/custody, police questioning, court, protests and police complaints.
 - Local jurisdiction preference (Scotland, England & Wales, Northern Ireland) stored only on the device.
 - Save pages for later and cache saved guides for offline use.
 - Saved library page with remove/clear controls.
 - Accessibility controls: text size, high contrast, reduced motion and read-aloud for supported browsers.
 - Improved PWA shortcuts and service-worker cache handling.
-- Privacy notice updated to explain local device storage.
+- Guide verification/source-transparency panel showing jurisdiction, review date and linked official-source count.
+- Privacy notice explains local device storage.
 
-## Phase 2 — Law-change notifications
+## Phase 2 — Law-change notifications (in progress)
 
-- Browser push-subscription endpoint.
-- VAPID keys stored as deployment secrets (private key never committed).
-- Topic and jurisdiction subscriptions matching the Law Alerts preferences.
-- Notification sender for important verified law changes.
-- Notification tap deep-links to the relevant RightsRadar page.
-- Unsubscribe / notification settings controls.
+Implemented:
+- Browser push-subscription API and database schema.
+- Device-only phone-alert controls on the Law Alerts page.
+- Topic and jurisdiction preferences for each browser push subscription.
+- Web Push service-worker display and notification-click deep links.
+- Unsubscribe controls.
+- Confirmation notification support after subscription.
+- Law Alerts database endpoint fixed and verified live.
+
+Still required before phone push can be switched on:
+- Add `VAPID_PUBLIC_KEY` and `VAPID_PRIVATE_KEY` as Vercel deployment secrets. The private key must never be committed to GitHub.
+- Connect the notification sender to verified law-change events.
+- Add automated delivery rules and duplicate-prevention state.
 
 ## Phase 3 — Verified RightsRadar Assistant
 

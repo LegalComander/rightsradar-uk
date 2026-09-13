@@ -1,4 +1,4 @@
-const CACHE_VERSION = 'rightsradar-pwa-v6';
+const CACHE_VERSION = 'rightsradar-pwa-v7';
 const STATIC_CACHE = `${CACHE_VERSION}-static`;
 const RUNTIME_CACHE = `${CACHE_VERSION}-runtime`;
 const SAVED_CACHE = `${CACHE_VERSION}-saved`;

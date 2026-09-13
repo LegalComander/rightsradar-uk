@@ -1,4 +1,4 @@
-const CACHE_VERSION = 'rightsradar-pwa-v3';
+const CACHE_VERSION = 'rightsradar-pwa-v4';
 const STATIC_CACHE = `${CACHE_VERSION}-static`;
 const RUNTIME_CACHE = `${CACHE_VERSION}-runtime`;
 const SAVED_CACHE = `${CACHE_VERSION}-saved`;
@@ -13,6 +13,7 @@ const CORE_ASSETS = [
   '/assets/app.js',
   '/assets/pwa.js',
   '/assets/pwa-settings.js',
+  '/assets/push-alerts.js',
   '/assets/pwa-experience.css',
   '/favicon.svg',
   '/manifest.webmanifest',
@@ -109,7 +110,6 @@ self.addEventListener('fetch', event => {
   );
 });
 
-// Web-push display support is ready for Phase 2. Subscriptions are not requested until the notification backend is enabled.
 self.addEventListener('push', event => {
   let data = {};
   try { data = event.data ? event.data.json() : {}; } catch { data = { body: event.data?.text?.() || '' }; }

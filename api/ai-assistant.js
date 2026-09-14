@@ -12,11 +12,12 @@ function body(req){if(!req.body)return {};if(typeof req.body==='string'){try{ret
 function origin(req){const proto=String(req.headers['x-forwarded-proto']||'https').split(',')[0].trim();const host=String(req.headers['x-forwarded-host']||req.headers.host||'').split(',')[0].trim();return host?`${proto}://${host}`:'https://rightsradaruk.vercel.app';}
 function sameOrigin(req){return !req.headers.origin || req.headers.origin===origin(req);}
 async function user(sql,req){const token=parseCookies(req.headers.cookie||'')[COOKIE_NAME]||'';return getSessionUser(sql,token);}
-
-async function schema(sql){
-  await sql`CREATE TABLE IF NOT EXISTS ai_assistant_usage (user_id TEXT NOT NULL, period_start DATE NOT NULL, message_count INT NOT NULL DEFAULT 0, updated_at TIMESTAMPTZ NOT NULL DEFAULT NOW(), PRIMARY KEY(user_id,period_start))`;
-  await sql`CREATE TABLE IF NOT EXISTS ai_assistant_entitlements (user_id TEXT PRIMARY KEY, plan TEXT NOT NULL DEFAULT 'free', status TEXT NOT NULL DEFAULT 'active', stripe_customer_id TEXT, stripe_subscription_id TEXT, current_period_end TIMESTAMPTZ, updated_at TIMESTAMPTZ NOT NULL DEFAULT NOW())`;
+function withTimeout(promise,ms,label){
+  let timer;
+  const timeout=new Promise((_,reject)=>{timer=setTimeout(()=>{const e=new Error(label||'Request timed out');e.code='TIMEOUT';reject(e);},ms);});
+  return Promise.race([promise,timeout]).finally(()=>clearTimeout(timer));
 }
+
 async function entitlement(sql,u){
   const rows=await sql`SELECT plan,status,current_period_end AS "currentPeriodEnd" FROM ai_assistant_entitlements WHERE user_id=${u.id} LIMIT 1`;
   const e=rows[0]||{}; const plus=e.plan==='plus' && ['active','trialing'].includes(String(e.status||'')) && (!e.currentPeriodEnd || new Date(e.currentPeriodEnd).getTime()>Date.now());
@@ -40,12 +41,15 @@ function responseText(data){if(typeof data.output_text==='string')return data.ou
 module.exports=async function handler(req,res){
   res.setHeader('Cache-Control','no-store');
   if(!['GET','POST'].includes(req.method)){res.setHeader('Allow','GET, POST');return send(res,405,{error:'Method not allowed.'});}
-  const conn=dbUrl(); if(!conn)return send(res,503,{error:'Assistant account database is not connected.'});
+  const conn=dbUrl(); if(!conn)return send(res,503,{error:'Assistant account database is not connected.',code:'DB_NOT_CONFIGURED'});
   const sql=neon(conn);
   try{
-    await schema(sql); const u=await user(sql,req).catch(()=>null);
+    // The AI usage/entitlement tables were created when the feature was deployed.
+    // Do not run CREATE TABLE statements on every status request: a DDL lock can leave
+    // the browser sitting on “Checking account…” indefinitely.
+    const u=await withTimeout(user(sql,req),8000,'Account lookup timed out').catch(error=>{if(error?.code==='TIMEOUT')throw error;return null;});
     if(!u)return send(res,401,{error:'Sign in to use conversational RightsRadar AI.',code:'SIGN_IN_REQUIRED'});
-    const ent=await entitlement(sql,u); const used=await usage(sql,u);
+    const [ent,used]=await withTimeout(Promise.all([entitlement(sql,u),usage(sql,u)]),8000,'Assistant account status timed out');
     if(req.method==='GET')return send(res,200,{ok:true,user:{name:u.name},plan:ent.plan,used,limit:ent.limit,remaining:Math.max(0,ent.limit-used),aiConfigured:Boolean(process.env.OPENAI_API_KEY)});
     if(!sameOrigin(req))return send(res,403,{error:'Invalid request origin.'});
     if(used>=ent.limit)return send(res,402,{error:ent.plan==='free'?'Your 5 free AI questions for this month are used. RightsRadar Plus will increase the allowance to 100 messages per month.':'Your monthly AI message allowance is used.',code:'LIMIT_REACHED',plan:ent.plan,used,limit:ent.limit});
@@ -63,5 +67,9 @@ module.exports=async function handler(req,res){
     const rows=await sql`INSERT INTO ai_assistant_usage(user_id,period_start,message_count) VALUES(${u.id},date_trunc('month',CURRENT_DATE)::date,1) ON CONFLICT(user_id,period_start) DO UPDATE SET message_count=ai_assistant_usage.message_count+1,updated_at=NOW() RETURNING message_count AS count`;
     const nowUsed=Number(rows[0]?.count||used+1);
     return send(res,200,{ok:true,answer,sources:grounded.sources.slice(0,6),plan:ent.plan,used:nowUsed,limit:ent.limit,remaining:Math.max(0,ent.limit-nowUsed)});
-  }catch(error){console.error('AI assistant request failed',error);return send(res,500,{error:'Unable to use conversational RightsRadar AI right now.'});}
+  }catch(error){
+    console.error('AI assistant request failed',error);
+    if(error?.code==='TIMEOUT')return send(res,504,{error:'The account check timed out. Please try again.',code:'ACCOUNT_CHECK_TIMEOUT'});
+    return send(res,500,{error:'Unable to use conversational RightsRadar AI right now.',code:'AI_STATUS_FAILED'});
+  }
 };

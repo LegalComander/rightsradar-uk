@@ -4,6 +4,7 @@
   "private": true,
   "description": "RightsRadar UK independent legal-information website",
   "dependencies": {
+    "@neondatabase/auth": "^0.2.0",
     "@neondatabase/serverless": "^1.0.0",
     "web-push": "^3.6.7"
   }

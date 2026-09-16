@@ -15,6 +15,19 @@
     const h=head.querySelector('h2');if(h){h.textContent='Advocate Chat';h.style.fontSize='1rem'}
     const badge=head.querySelector('.rr-chat-badge');if(badge)badge.style.marginLeft='auto';
   }
+  function addPasswordRecovery(){
+    const form=document.getElementById('signInForm');if(!form||form.querySelector('#forgotPassword'))return;
+    const password=form.querySelector('#signInPassword');if(!password)return;
+    const row=document.createElement('div');row.style.cssText='display:flex;justify-content:flex-end;margin:7px 2px 2px';
+    const forgot=document.createElement('button');forgot.id='forgotPassword';forgot.type='button';forgot.textContent='Forgot password?';forgot.style.cssText='border:0;background:transparent;color:#8fc9ff;font:inherit;font-size:.8rem;font-weight:750;cursor:pointer;padding:2px 0';row.appendChild(forgot);password.insertAdjacentElement('afterend',row);
+    forgot.addEventListener('click',async()=>{
+      const email=document.getElementById('signInEmail');const status=document.getElementById('authStatus');const address=String(email?.value||'').trim();
+      if(!address){status.style.display='block';status.className='statusline error';status.textContent='Enter your email address first, then press Forgot password.';email?.focus();return}
+      forgot.disabled=true;status.style.display='block';status.className='statusline';status.textContent='Sending a secure reset link…';
+      try{const r=await fetch('/api/auth',{method:'POST',credentials:'same-origin',headers:{'content-type':'application/json'},body:JSON.stringify({action:'request-password-reset',email:address})});const data=await r.json().catch(()=>({}));if(!r.ok)throw new Error(data.error||'Unable to request a password reset.');status.className='statusline';status.textContent=data.message||'If that account exists, a reset link will be sent shortly.'}
+      catch(err){status.className='statusline error';status.textContent=err.message}finally{forgot.disabled=false}
+    });
+  }
   modernNav();
-  load('assets/community-core.js?v=20260916',()=>{modernNav();decorateChat();load('assets/community-features.js?v=20260916',decorateChat)});
+  load('assets/community-core.js?v=20260916d',()=>{modernNav();decorateChat();addPasswordRecovery();load('assets/community-features.js?v=20260916',decorateChat)});
 })();

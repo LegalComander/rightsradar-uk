@@ -64,6 +64,25 @@ module.exports=async function handler(req,res){
       if(!token)return send(res,401,{error:'Sign-in did not return a valid session.'}); setSessionCookie(res,token);
       return send(res,200,{ok:true,authenticated:true,user:result.user?{id:result.user.id,name:result.user.name,email:result.user.email}:null,message:'Signed in successfully.'});
     }
+    if(action==='request-password-reset'){
+      const email=String(body.email||'').trim().toLowerCase();
+      if(!validEmail(email))return send(res,400,{error:'Enter a valid email address.'});
+      const redirectTo=`${requestOrigin(req)}/reset-password.html`;
+      try{await authRequest(req,'/request-password-reset',{email,redirectTo});}catch(error){
+        // Do not reveal whether an address exists. Configuration/server errors still get logged.
+        if(Number(error.status)>=500||error.message==='AUTH_NOT_CONFIGURED')throw error;
+        console.warn('password reset request rejected',error.message);
+      }
+      return send(res,200,{ok:true,message:'If an account exists for that email, a password reset link will be sent shortly.'});
+    }
+    if(action==='reset-password'){
+      const token=String(body.token||'').trim(); const newPassword=String(body.newPassword||'');
+      if(!token||token.length>2048)return send(res,400,{error:'This password reset link is invalid or has expired.'});
+      if(newPassword.length<8||newPassword.length>128)return send(res,400,{error:'Password must be between 8 and 128 characters.'});
+      await authRequest(req,'/reset-password',{token,newPassword});
+      clearSessionCookie(res);
+      return send(res,200,{ok:true,message:'Password reset successfully.'});
+    }
     if(action==='sign-out'){clearSessionCookie(res);return send(res,200,{ok:true,authenticated:false,message:'Signed out.'});}
     return send(res,400,{error:'Unknown account action.'});
   }catch(error){if(error.message==='AUTH_NOT_CONFIGURED')return send(res,503,{error:'Neon Auth is not connected to this deployment yet.'});console.error('auth action failed',error);const status=Number(error.status)||500;const safeStatus=status>=400&&status<500?status:500;return send(res,safeStatus,{error:safeStatus===500?'Unable to complete the account request right now.':error.message});}
